@@ -1,0 +1,31 @@
+{
+  "name": "tear-utilities",
+  "version": "0.0.1",
+  "description": "Utility bot for Tear Paradise",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "npm run lint && npm run prettier",
+    "lint": "eslint src/**/*.ts --fix",
+    "prepublish": "npm run build",
+    "prettier": "prettier --write src/**/*.ts",
+    "test": "eslint src && prettier --check src/**/*.ts && tsc --noEmit"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NotReallyEight/tear-utilities.git"
+  },
+  "keywords": [
+    "utility-bot"
+  ],
+  "author": "NotReallyEight",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/NotReallyEight/tear-utilities/issues"
+  },
+  "homepage": "https://github.com/NotReallyEight/tear-utilities#readme",
+  "dependencies": {
+    "eris": "^0.16.1",
+    "eslint": "^8.5.0",
+    "prettier": "^2.5.1"
+  }
+}

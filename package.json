@@ -4,9 +4,8 @@
   "description": "Utility bot for Tear Paradise",
   "main": "dist/index.js",
   "scripts": {
-    "build": "npm run lint && npm run prettier",
+    "build": "npm run lint && npm run prettier && tsc",
     "lint": "eslint src/**/*.ts --fix",
-    "prepublish": "npm run build",
     "prettier": "prettier --write src/**/*.ts",
     "test": "eslint src && prettier --check src/**/*.ts && tsc --noEmit"
   },

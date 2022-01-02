@@ -5,7 +5,7 @@ import type { Command } from "./Command";
 import type { Event } from "./Event";
 import type { SlashCommand } from "./SlashCommand";
 import { REST } from "@discordjs/rest";
-import type { RESTGetAPIApplicationGuildCommandsResult } from "discord-api-types/v9";
+import type { RESTPostAPIApplicationGuildCommandsJSONBody } from "discord-api-types/v9";
 import { Routes } from "discord-api-types/v9";
 import { config } from "../config";
 import { Logger } from "./Logger";
@@ -54,30 +54,40 @@ export class Client extends Discord.Client {
 	}
 
 	public async addSlashCommands(path: string): Promise<this> {
-		const commandFiles = readdirSync(path);
+		try {
+			const commandFiles = readdirSync(path);
+			const commands: RESTPostAPIApplicationGuildCommandsJSONBody[] = [];
 
-		for (const file of commandFiles) {
-			// eslint-disable-next-line no-await-in-loop
-			const { command } = (await import(
-				join(path, file)
-			)) as SlashCommandImport;
+			for (const file of commandFiles) {
+				// eslint-disable-next-line no-await-in-loop
+				const { command } = (await import(
+					join(path, file)
+				)) as SlashCommandImport;
 
-			this.slashCommands.push(command);
+				this.slashCommands.push(command);
 
-			try {
 				do
 					// eslint-disable-next-line no-await-in-loop
 					await this.wait(500);
 				while (!this.user);
+
+				commands.push({
+					type: command.type,
+					name: command.name,
+					description: command.description,
+					options: command.options?.options ?? undefined,
+				});
+
 				// eslint-disable-next-line no-await-in-loop
-				const commands = (await this.restClient?.get(
-					Routes.applicationGuildCommands(this.user.id, config.guildId)
-				)) as RESTGetAPIApplicationGuildCommandsResult;
-				console.info(commands);
-			} catch (error: any) {
-				Logger.error((error as Error).message);
-				console.log(error);
+				await this.restClient?.put(
+					Routes.applicationGuildCommands(this.user.id, config.guildId),
+					{
+						body: commands,
+					}
+				);
 			}
+		} catch (error: any) {
+			Logger.error((error as Error).message);
 		}
 
 		return this;

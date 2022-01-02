@@ -1,6 +1,8 @@
 import type { BaseCommandInteraction } from "discord.js";
 import type Discord from "discord.js";
 import type { Client } from "./Client";
+import type { APIApplicationCommandOption } from "discord-api-types/payloads/v9/";
+import { ApplicationCommandType } from "discord-api-types/payloads/v9/";
 
 export interface SlashCommandRequirements {
 	custom?: (
@@ -18,8 +20,9 @@ export interface CommandFn {
 
 export interface CommandOptions {
 	description: string;
-	options?: Discord.ApplicationCommandOption[];
+	options?: APIApplicationCommandOption[];
 	defaultPermission?: boolean;
+	type: ApplicationCommandType;
 }
 
 export class SlashCommand {
@@ -28,6 +31,7 @@ export class SlashCommand {
 	fn: CommandFn;
 	requirements: SlashCommandRequirements;
 	options?: CommandOptions;
+	type: ApplicationCommandType;
 	constructor(
 		name: string,
 		fn: CommandFn,
@@ -43,7 +47,11 @@ export class SlashCommand {
 		if (options) {
 			this.options = options;
 			this.description = options.description;
-		} else this.description = "A command with no description!";
+			this.type = options.type;
+		} else {
+			this.description = "A command with no description!";
+			this.type = ApplicationCommandType.ChatInput;
+		}
 	}
 
 	public async checkPermissions(

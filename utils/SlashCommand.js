@@ -12,9 +12,12 @@ class SlashCommand {
         if (options) {
             this.options = options;
             this.description = options.description;
+            this.type = options.type;
         }
-        else
+        else {
             this.description = "A command with no description!";
+            this.type = 1 /* ChatInput */;
+        }
     }
     async checkPermissions(interaction, client) {
         return this.enoughRequirements(this.requirements, interaction, client);

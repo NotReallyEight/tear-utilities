@@ -30,24 +30,31 @@ class Client extends discord_js_1.default.Client {
         return this;
     }
     async addSlashCommands(path) {
-        const commandFiles = (0, fs_1.readdirSync)(path);
-        for (const file of commandFiles) {
-            // eslint-disable-next-line no-await-in-loop
-            const { command } = (await Promise.resolve().then(() => (0, tslib_1.__importStar)(require((0, path_1.join)(path, file)))));
-            this.slashCommands.push(command);
-            try {
+        try {
+            const commandFiles = (0, fs_1.readdirSync)(path);
+            const commands = [];
+            for (const file of commandFiles) {
+                // eslint-disable-next-line no-await-in-loop
+                const { command } = (await Promise.resolve().then(() => (0, tslib_1.__importStar)(require((0, path_1.join)(path, file)))));
+                this.slashCommands.push(command);
                 do
                     // eslint-disable-next-line no-await-in-loop
                     await this.wait(500);
                 while (!this.user);
+                commands.push({
+                    type: command.type,
+                    name: command.name,
+                    description: command.description,
+                    options: command.options?.options ?? undefined,
+                });
                 // eslint-disable-next-line no-await-in-loop
-                const commands = (await this.restClient?.get(v9_1.Routes.applicationGuildCommands(this.user.id, config_1.config.guildId)));
-                console.info(commands);
+                await this.restClient?.put(v9_1.Routes.applicationGuildCommands(this.user.id, config_1.config.guildId), {
+                    body: commands,
+                });
             }
-            catch (error) {
-                Logger_1.Logger.error(error.message);
-                console.log(error);
-            }
+        }
+        catch (error) {
+            Logger_1.Logger.error(error.message);
         }
         return this;
     }

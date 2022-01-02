@@ -7,6 +7,7 @@
     "checkJs": true,
     "declaration": true,
     "declarationDir": "./types",
+    "esModuleInterop": true,
     "extendedDiagnostics": true,
     "importHelpers": true,
     "lib": ["ES2020", "DOM"],
@@ -25,5 +26,10 @@
     "strictFunctionTypes": true,
     "strictNullChecks": true,
     "strictPropertyInitialization": true
-  }
+  },
+  "extends": "@tsconfig/node16/tsconfig.json",
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": ["node_modules", "dist", "types"]
 }

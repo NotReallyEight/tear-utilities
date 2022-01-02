@@ -109,8 +109,32 @@ export class Client extends Discord.Client {
 		return this;
 	}
 
+	public getPrefixesForMessage(): string[] {
+		const prefixes = [this.prefix];
+
+		return prefixes;
+	}
+
 	public mentionPrefixRegExp(): RegExp | null {
 		if (this.user) return new RegExp(`^<@!?${this.user.id}>\\s?`);
+		return null;
+	}
+
+	public splitPrefixFromContent(
+		message: Discord.Message
+	): [string, string] | null {
+		const prefixes = this.getPrefixesForMessage();
+
+		for (const prefix of prefixes)
+			if (message.content.toLowerCase().startsWith(prefix.toLowerCase()))
+				return [prefix, message.content.substr(prefix.length)];
+
+		const match = message.content.match(this.mentionPrefixRegExp()!);
+		if (match) return [match[0], message.content.substr(match[0].length)];
+
+		if (!(message.channel instanceof Discord.GuildChannel))
+			return ["", message.content];
+
 		return null;
 	}
 

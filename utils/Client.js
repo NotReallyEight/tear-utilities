@@ -73,9 +73,25 @@ class Client extends discord_js_1.default.Client {
         }
         return this;
     }
+    getPrefixesForMessage() {
+        const prefixes = [this.prefix];
+        return prefixes;
+    }
     mentionPrefixRegExp() {
         if (this.user)
             return new RegExp(`^<@!?${this.user.id}>\\s?`);
+        return null;
+    }
+    splitPrefixFromContent(message) {
+        const prefixes = this.getPrefixesForMessage();
+        for (const prefix of prefixes)
+            if (message.content.toLowerCase().startsWith(prefix.toLowerCase()))
+                return [prefix, message.content.substr(prefix.length)];
+        const match = message.content.match(this.mentionPrefixRegExp());
+        if (match)
+            return [match[0], message.content.substr(match[0].length)];
+        if (!(message.channel instanceof discord_js_1.default.GuildChannel))
+            return ["", message.content];
         return null;
     }
     async wait(milliseconds) {

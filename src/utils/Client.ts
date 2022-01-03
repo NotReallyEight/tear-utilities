@@ -115,9 +115,57 @@ export class Client extends Discord.Client {
 		return prefixes;
 	}
 
+	public hasCommand(
+		message: Discord.Message
+	): [string, string, ...string[]] | null {
+		const matchResult = this.splitPrefixFromContent(message);
+		if (!matchResult) return null;
+
+		const [prefix, content] = matchResult;
+
+		if (!content) {
+			if (!prefix || !prefix.match(this.mentionPrefixRegExp()!)) return null;
+			return [prefix, ""];
+		}
+
+		const args = content.split(" ");
+		const commandName = args.shift();
+		if (commandName === undefined) return null;
+		return [prefix, commandName.toLowerCase(), ...args];
+	}
+
 	public mentionPrefixRegExp(): RegExp | null {
 		if (this.user) return new RegExp(`^<@!?${this.user.id}>\\s?`);
 		return null;
+	}
+
+	public async processCommand(message: Discord.Message): Promise<boolean> {
+		const commandInformation = this.hasCommand(message);
+		if (!commandInformation) return false;
+		const [_prefix, commandName, ...args] = commandInformation;
+
+		const command =
+			this.commands.find((c) => c.names.includes(commandName)) ?? null;
+
+		if (!command) return false;
+
+		await command.execute(message, args, this);
+
+		return true;
+	}
+
+	public async processSlashCommand(
+		interaction: Discord.BaseCommandInteraction
+	): Promise<boolean> {
+		const command = this.slashCommands.find(
+			(c) => c.name === interaction.commandName
+		);
+
+		if (!command) return false;
+
+		await command.execute(interaction, this);
+
+		return true;
 	}
 
 	public splitPrefixFromContent(
@@ -127,10 +175,10 @@ export class Client extends Discord.Client {
 
 		for (const prefix of prefixes)
 			if (message.content.toLowerCase().startsWith(prefix.toLowerCase()))
-				return [prefix, message.content.substr(prefix.length)];
+				return [prefix, message.content.slice(prefix.length)];
 
 		const match = message.content.match(this.mentionPrefixRegExp()!);
-		if (match) return [match[0], message.content.substr(match[0].length)];
+		if (match) return [match[0], message.content.slice(match[0].length)];
 
 		if (!(message.channel instanceof Discord.GuildChannel))
 			return ["", message.content];

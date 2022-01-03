@@ -77,19 +77,53 @@ class Client extends discord_js_1.default.Client {
         const prefixes = [this.prefix];
         return prefixes;
     }
+    hasCommand(message) {
+        const matchResult = this.splitPrefixFromContent(message);
+        if (!matchResult)
+            return null;
+        const [prefix, content] = matchResult;
+        if (!content) {
+            if (!prefix || !prefix.match(this.mentionPrefixRegExp()))
+                return null;
+            return [prefix, ""];
+        }
+        const args = content.split(" ");
+        const commandName = args.shift();
+        if (commandName === undefined)
+            return null;
+        return [prefix, commandName.toLowerCase(), ...args];
+    }
     mentionPrefixRegExp() {
         if (this.user)
             return new RegExp(`^<@!?${this.user.id}>\\s?`);
         return null;
     }
+    async processCommand(message) {
+        const commandInformation = this.hasCommand(message);
+        if (!commandInformation)
+            return false;
+        const [_prefix, commandName, ...args] = commandInformation;
+        const command = this.commands.find((c) => c.names.includes(commandName)) ?? null;
+        if (!command)
+            return false;
+        await command.execute(message, args, this);
+        return true;
+    }
+    async processSlashCommand(interaction) {
+        const command = this.slashCommands.find((c) => c.name === interaction.commandName);
+        if (!command)
+            return false;
+        await command.execute(interaction, this);
+        return true;
+    }
     splitPrefixFromContent(message) {
         const prefixes = this.getPrefixesForMessage();
         for (const prefix of prefixes)
             if (message.content.toLowerCase().startsWith(prefix.toLowerCase()))
-                return [prefix, message.content.substr(prefix.length)];
+                return [prefix, message.content.slice(prefix.length)];
         const match = message.content.match(this.mentionPrefixRegExp());
         if (match)
-            return [match[0], message.content.substr(match[0].length)];
+            return [match[0], message.content.slice(match[0].length)];
         if (!(message.channel instanceof discord_js_1.default.GuildChannel))
             return ["", message.content];
         return null;

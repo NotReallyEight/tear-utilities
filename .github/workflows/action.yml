@@ -7,7 +7,7 @@ on:
     branches: [main]
   
 jobs:
-  - check-eslint:
+  check-eslint:
     runs-on: ubuntu-latest
       steps:
         - uses: actions/checkout@v2
@@ -17,7 +17,8 @@ jobs:
         - run: npm ci
         - run: npm run lint
   
-  - compile:
+  compile:
+    needs: check-eslint
     runs-on: ubuntu-latest
     name: Compile TypeScript code and push to another branch
     steps:
@@ -39,7 +40,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           MESSAGE: "Compile: ({sha}) {msg}"
 
-  - analyze:
+  analyze:
+    needs: compile
     name: Analyze
     runs-on: ubuntu-latest
     permissions:

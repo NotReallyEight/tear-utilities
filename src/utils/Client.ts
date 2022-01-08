@@ -9,6 +9,7 @@ import type { RESTPostAPIApplicationGuildCommandsJSONBody } from "discord-api-ty
 import { Routes } from "discord-api-types/v9";
 import { config } from "../config";
 import { Logger } from "./Logger";
+import type ButtonEvent from "./ButtonEvent";
 
 export interface ClientOptions extends Discord.ClientOptions {
 	prefix: string;
@@ -29,7 +30,7 @@ export interface SlashCommandImport {
 
 export class Client extends Discord.Client {
 	commands: Command[] = [];
-	componentEvents: any[] = [];
+	componentEvents: ButtonEvent[] = [];
 	prefix: string;
 	restClient?: REST;
 	slashCommands: SlashCommand[] = [];
@@ -100,19 +101,23 @@ export class Client extends Discord.Client {
 			// eslint-disable-next-line no-await-in-loop
 			const { event } = (await import(join(path, file))) as EventImport;
 
-			event.computedListener = (...args): void => {
-				void event.args[1](...args);
-			};
-			if (event.once ?? false) this.once(event.args[0], event.computedListener);
-			else this.on(event.args[0], event.computedListener);
+			if (event.once ?? false)
+				this.once(event.event, (...args) => {
+					void event.listener(this, ...args);
+				});
+			else
+				this.on(event.event, (...args) => {
+					void event.listener(this, ...args);
+				});
 		}
 		return this;
 	}
 
-	public getPrefixesForMessage(): string[] {
-		const prefixes = [this.prefix];
+	public getPrefixesForMessage(message: Discord.Message): string[] {
+		if (message.content.match(this.mentionPrefixRegExp()!)?.length != null)
+			return [`<@!${this.user!.id}>`];
 
-		return prefixes;
+		return [this.prefix];
 	}
 
 	public hasCommand(
@@ -128,7 +133,7 @@ export class Client extends Discord.Client {
 			return [prefix, ""];
 		}
 
-		const args = content.split(" ");
+		const args = content.split(" ").filter((arg) => arg !== "");
 		const commandName = args.shift();
 		if (commandName === undefined) return null;
 		return [prefix, commandName.toLowerCase(), ...args];
@@ -171,7 +176,7 @@ export class Client extends Discord.Client {
 	public splitPrefixFromContent(
 		message: Discord.Message
 	): [string, string] | null {
-		const prefixes = this.getPrefixesForMessage();
+		const prefixes = this.getPrefixesForMessage(message);
 
 		for (const prefix of prefixes)
 			if (message.content.toLowerCase().startsWith(prefix.toLowerCase()))

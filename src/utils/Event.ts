@@ -1,4 +1,5 @@
 import type Discord from "discord.js";
+import type { Client } from "../utils/Client";
 
 export interface EventListenerOptions {
 	once?: boolean;
@@ -7,20 +8,25 @@ export interface EventListenerOptions {
 export class Event<K extends keyof Discord.ClientEvents>
 	implements EventListenerOptions
 {
-	args: [K, (...args: Discord.ClientEvents[K]) => Discord.Awaitable<void>];
+	event: K;
+
+	listener: (
+		client: Client,
+		...args: [...Discord.ClientEvents[K]]
+	) => Discord.Awaitable<void>;
 
 	once?: boolean;
 
-	computedListener?: (
-		...args: Discord.ClientEvents[K]
-	) => Discord.Awaitable<void>;
-
 	constructor(
 		event: K,
-		listener: (...args: Discord.ClientEvents[K]) => Discord.Awaitable<void>,
+		listener: (
+			client: Client,
+			...args: [...Discord.ClientEvents[K]]
+		) => Discord.Awaitable<void>,
 		{ once = false }: EventListenerOptions = {}
 	) {
-		this.args = [event, listener];
+		this.event = event;
+		this.listener = listener;
 		this.once = once;
 	}
 }

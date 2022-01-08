@@ -8,7 +8,7 @@
     "lint": "eslint src/**/*.ts --fix",
     "prettier": "prettier --write src/**/*.ts",
     "test": "eslint src && prettier --check src/**/*.ts && tsc --noEmit",
-    "start": "node ."
+    "start": "npm run build && node ."
   },
   "repository": {
     "type": "git",

@@ -25,7 +25,7 @@
   "homepage": "https://github.com/NotReallyEight/tear-utilities#readme",
   "dependencies": {
     "@discordjs/rest": "^0.2.0-canary.0",
-    "@types/node": "^16.11.18",
+    "@types/node": "^16.11.19",
     "@typescript-eslint/parser": "^5.9.0",
     "chalk": "^4.1.2",
     "discord.js": "^13.5.0",

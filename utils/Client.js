@@ -63,19 +63,21 @@ class Client extends discord_js_1.default.Client {
         for (const file of eventFiles) {
             // eslint-disable-next-line no-await-in-loop
             const { event } = (await Promise.resolve().then(() => (0, tslib_1.__importStar)(require((0, path_1.join)(path, file)))));
-            event.computedListener = (...args) => {
-                void event.args[1](...args);
-            };
             if (event.once ?? false)
-                this.once(event.args[0], event.computedListener);
+                this.once(event.event, (...args) => {
+                    void event.listener(this, ...args);
+                });
             else
-                this.on(event.args[0], event.computedListener);
+                this.on(event.event, (...args) => {
+                    void event.listener(this, ...args);
+                });
         }
         return this;
     }
-    getPrefixesForMessage() {
-        const prefixes = [this.prefix];
-        return prefixes;
+    getPrefixesForMessage(message) {
+        if (message.content.match(this.mentionPrefixRegExp())?.length != null)
+            return [`<@!${this.user.id}>`];
+        return [this.prefix];
     }
     hasCommand(message) {
         const matchResult = this.splitPrefixFromContent(message);
@@ -87,7 +89,7 @@ class Client extends discord_js_1.default.Client {
                 return null;
             return [prefix, ""];
         }
-        const args = content.split(" ");
+        const args = content.split(" ").filter((arg) => arg !== "");
         const commandName = args.shift();
         if (commandName === undefined)
             return null;
@@ -117,7 +119,7 @@ class Client extends discord_js_1.default.Client {
         return true;
     }
     splitPrefixFromContent(message) {
-        const prefixes = this.getPrefixesForMessage();
+        const prefixes = this.getPrefixesForMessage(message);
         for (const prefix of prefixes)
             if (message.content.toLowerCase().startsWith(prefix.toLowerCase()))
                 return [prefix, message.content.slice(prefix.length)];

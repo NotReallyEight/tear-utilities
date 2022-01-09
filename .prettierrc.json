@@ -1,11 +1,12 @@
 {
+	"quoteProps": "consistent",
 	"arrowParens": "always",
 	"bracketSpacing": true,
+	"filepath": "src/",
 	"endOfLine": "crlf",
-	"parser": "typescript",
-	"quoteProps": "consistent",
 	"semi": true,
 	"tabWidth": 2,
 	"trailingComma": "es5",
-	"useTabs": true
+	"useTabs": true,
+	"parser": "typescript"
 }

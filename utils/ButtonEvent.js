@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.ButtonEvent = void 0;
 class ButtonEvent {
     constructor(name, fn, requirements) {
         this.name = name;
@@ -28,4 +29,4 @@ class ButtonEvent {
         return true;
     }
 }
-exports.default = ButtonEvent;
+exports.ButtonEvent = ButtonEvent;

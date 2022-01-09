@@ -29,6 +29,15 @@ class Client extends discord_js_1.default.Client {
         }
         return this;
     }
+    async addComponentEvents(path) {
+        const eventFiles = (0, fs_1.readdirSync)(path);
+        for (const file of eventFiles) {
+            // eslint-disable-next-line no-await-in-loop
+            const { event } = (await Promise.resolve().then(() => (0, tslib_1.__importStar)(require((0, path_1.join)(path, file)))));
+            this.componentEvents.push(event);
+        }
+        return this;
+    }
     async addSlashCommands(path) {
         try {
             const commandFiles = (0, fs_1.readdirSync)(path);

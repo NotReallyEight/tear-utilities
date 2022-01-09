@@ -19,4 +19,5 @@ const client = new Client_1.Client({
 });
 void client.addEvents((0, path_1.join)(__dirname, "events"));
 void client.addSlashCommands((0, path_1.join)(__dirname, "commands", "slash"));
+void client.addCommands((0, path_1.join)(__dirname, "commands", "text"));
 void client.login(config_1.config.token);

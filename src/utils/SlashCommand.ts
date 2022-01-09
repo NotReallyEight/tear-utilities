@@ -1,8 +1,8 @@
-import type { APIApplicationCommandOption } from "discord-api-types/v9";
-import { ApplicationCommandType } from "discord-api-types/v9";
-import type Discord from "discord.js";
 import type { BaseCommandInteraction } from "discord.js";
+import type Discord from "discord.js";
 import type { Client } from "./Client";
+import type { APIApplicationCommandOption } from "discord-api-types/payloads/v9/";
+import { ApplicationCommandType } from "discord-api-types/payloads/v9/";
 
 export interface SlashCommandRequirements {
 	custom?: (

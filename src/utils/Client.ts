@@ -1,6 +1,6 @@
 import Discord from "discord.js";
-import { readdirSync } from "node:fs";
-import { join } from "node:path";
+import { readdirSync } from "fs";
+import { join } from "path";
 import type { Command } from "./Command";
 import type { Event } from "./Event";
 import type { SlashCommand } from "./SlashCommand";

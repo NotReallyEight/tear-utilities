@@ -1,8 +1,8 @@
-import Discord from "discord.js";
-import express from "express";
-import { join } from "node:path";
-import { config } from "./config";
 import { Client } from "./utils/Client";
+import Discord from "discord.js";
+import { join } from "path";
+import { config } from "./config";
+import express from "express";
 
 // create a basic express server
 const app = express();

@@ -9,7 +9,7 @@ import type { RESTPostAPIApplicationGuildCommandsJSONBody } from "discord-api-ty
 import { Routes } from "discord-api-types/v9";
 import { config } from "../config";
 import { Logger } from "./Logger";
-import type ButtonEvent from "./ButtonEvent";
+import type { ButtonEvent } from "./ButtonEvent";
 
 export interface ClientOptions extends Discord.ClientOptions {
 	prefix: string;
@@ -18,6 +18,10 @@ export interface ClientOptions extends Discord.ClientOptions {
 
 export interface EventImport {
 	event: Event<keyof Discord.ClientEvents>;
+}
+
+export interface ComponentEventImport {
+	event: ButtonEvent;
 }
 
 export interface CommandImport {
@@ -51,6 +55,21 @@ export class Client extends Discord.Client {
 
 			this.commands.push(command);
 		}
+		return this;
+	}
+
+	public async addComponentEvents(path: string): Promise<this> {
+		const eventFiles = readdirSync(path);
+
+		for (const file of eventFiles) {
+			// eslint-disable-next-line no-await-in-loop
+			const { event } = (await import(
+				join(path, file)
+			)) as ComponentEventImport;
+
+			this.componentEvents.push(event);
+		}
+
 		return this;
 	}
 

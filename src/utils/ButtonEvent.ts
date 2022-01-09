@@ -1,19 +1,19 @@
-import type { ButtonInteraction } from "discord.js";
+import type { MessageComponentInteraction } from "discord.js";
 import type { Client } from "./Client";
 
 export type ButtonEventFn = (
-	interaction: ButtonInteraction,
+	interaction: MessageComponentInteraction,
 	client: Client
 ) => Promise<void> | void;
 
 export interface ButtonEventRequirements {
 	custom?: (
-		interaction: ButtonInteraction,
+		interaction: MessageComponentInteraction,
 		client: Client
 	) => Promise<boolean> | boolean;
 }
 
-export default class ButtonEvent {
+export class ButtonEvent {
 	name: string;
 	fn: ButtonEventFn;
 	requirements: ButtonEventRequirements;
@@ -34,14 +34,14 @@ export default class ButtonEvent {
 	}
 
 	async checkPermissions(
-		interaction: ButtonInteraction,
+		interaction: MessageComponentInteraction,
 		client: Client
 	): Promise<boolean> {
 		return this._enoughRequirements(this.requirements, interaction, client);
 	}
 
 	async execute(
-		interaction: ButtonInteraction,
+		interaction: MessageComponentInteraction,
 		client: Client
 	): Promise<boolean> {
 		if (!(await this.checkPermissions(interaction, client))) return false;
@@ -52,7 +52,7 @@ export default class ButtonEvent {
 
 	private async _enoughRequirements(
 		requirements: ButtonEventRequirements,
-		interaction: ButtonInteraction,
+		interaction: MessageComponentInteraction,
 		client: Client
 	) {
 		const { custom } = requirements;

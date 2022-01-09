@@ -19,7 +19,7 @@ const client = new Client({
 	token: config.token!,
 });
 
-void client.addEvents(join(__dirname, "events"));
+client.addEvents(join(__dirname, "events"));
 
 void client.addSlashCommands(join(__dirname, "commands", "slash"));
 

@@ -1,4 +1,4 @@
-name: Typescript and eslint tests
+name: Typescript, eslint and tsup tests
 on:
   push:
     branches: [main]
@@ -18,3 +18,4 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
     - run: npm ci
+    - run: npm run build

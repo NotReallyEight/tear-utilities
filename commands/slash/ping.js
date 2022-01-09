@@ -9,3 +9,4 @@ exports.command = new SlashCommand_1.SlashCommand("ping", (interaction) => {
     type: 1,
     defaultPermission: true,
 });
+//# sourceMappingURL=ping.js.map

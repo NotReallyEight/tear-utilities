@@ -28,3 +28,4 @@ exports.command = new Command_1.Command("rules", async (message) => {
         return true;
     },
 });
+//# sourceMappingURL=rules.js.map

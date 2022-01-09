@@ -6,3 +6,4 @@ const Logger_1 = require("../utils/Logger");
 exports.event = new Event_1.Event("ready", () => {
     Logger_1.Logger.info("The client is ready.");
 });
+//# sourceMappingURL=ready.js.map

@@ -13,3 +13,4 @@ exports.event = new Event_1.Event("messageCreate", async (client, message) => {
         Logger_1.Logger.error(`${err.name}: ${err.message}`);
     }
 });
+//# sourceMappingURL=defaultMessageCreate.js.map

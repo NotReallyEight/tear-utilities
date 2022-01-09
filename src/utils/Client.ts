@@ -78,7 +78,7 @@ export class Client extends Discord.Client {
 			const commandFiles = readdirSync(path);
 			const commands: RESTPostAPIApplicationGuildCommandsJSONBody[] = [];
 
-			for (const file of commandFiles) {
+			for (const file of commandFiles.filter((f) => f.endsWith(".js"))) {
 				// eslint-disable-next-line no-await-in-loop
 				const { command } = (await import(
 					join(path, file)
@@ -116,7 +116,7 @@ export class Client extends Discord.Client {
 	public async addEvents(path: string): Promise<this> {
 		const eventFiles = readdirSync(path);
 
-		for (const file of eventFiles) {
+		for (const file of eventFiles.filter((f) => f.endsWith(".js"))) {
 			// eslint-disable-next-line no-await-in-loop
 			const { event } = (await import(join(path, file))) as EventImport;
 

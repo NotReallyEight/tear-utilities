@@ -19,7 +19,7 @@ const client = new Client_1.Client({
     prefix: config_1.config.prefix,
     token: config_1.config.token,
 });
-void client.addEvents((0, node_path_1.join)(__dirname, "events"));
+client.addEvents((0, node_path_1.join)(__dirname, "events"));
 void client.addSlashCommands((0, node_path_1.join)(__dirname, "commands", "slash"));
 void client.login(config_1.config.token);
 //# sourceMappingURL=index.js.map

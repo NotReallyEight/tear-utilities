@@ -1,23 +1,4 @@
 "use strict";
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -41,20 +22,20 @@ class Client extends discord_js_1.default.Client {
             version: "9",
         }).setToken(config_1.config.token);
     }
-    async addCommands(path) {
+    addCommands(path) {
         const commandFiles = (0, node_fs_1.readdirSync)(path);
         for (const file of commandFiles) {
             // eslint-disable-next-line no-await-in-loop
-            const { command } = (await Promise.resolve().then(() => __importStar(require((0, node_path_1.join)(path, file)))));
+            const { command } = require((0, node_path_1.join)(path, file));
             this.commands.push(command);
         }
         return this;
     }
-    async addComponentEvents(path) {
+    addComponentEvents(path) {
         const eventFiles = (0, node_fs_1.readdirSync)(path);
         for (const file of eventFiles) {
             // eslint-disable-next-line no-await-in-loop
-            const { event } = (await Promise.resolve().then(() => __importStar(require((0, node_path_1.join)(path, file)))));
+            const { event } = require((0, node_path_1.join)(path, file));
             this.componentEvents.push(event);
         }
         return this;
@@ -65,7 +46,7 @@ class Client extends discord_js_1.default.Client {
             const commands = [];
             for (const file of commandFiles.filter((f) => f.endsWith(".js"))) {
                 // eslint-disable-next-line no-await-in-loop
-                const { command } = (await Promise.resolve().then(() => __importStar(require((0, node_path_1.join)(path, file)))));
+                const { command } = require((0, node_path_1.join)(path, file));
                 this.slashCommands.push(command);
                 do
                     // eslint-disable-next-line no-await-in-loop
@@ -88,11 +69,11 @@ class Client extends discord_js_1.default.Client {
         }
         return this;
     }
-    async addEvents(path) {
+    addEvents(path) {
         const eventFiles = (0, node_fs_1.readdirSync)(path);
         for (const file of eventFiles.filter((f) => f.endsWith(".js"))) {
             // eslint-disable-next-line no-await-in-loop
-            const { event } = (await Promise.resolve().then(() => __importStar(require((0, node_path_1.join)(path, file)))));
+            const { event } = require((0, node_path_1.join)(path, file));
             if (event.once ?? false)
                 this.once(event.event, (...args) => {
                     void event.listener(this, ...args);

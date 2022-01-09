@@ -1,6 +1,6 @@
 import Discord from "discord.js";
-import { readdirSync } from "fs";
-import { join } from "path";
+import { readdirSync } from "node:fs";
+import { join } from "node:path";
 import type { Command } from "./Command";
 import type { Event } from "./Event";
 import type { SlashCommand } from "./SlashCommand";
@@ -9,7 +9,7 @@ import type { RESTPostAPIApplicationGuildCommandsJSONBody } from "discord-api-ty
 import { Routes } from "discord-api-types/v9";
 import { config } from "../config";
 import { Logger } from "./Logger";
-import type ButtonEvent from "./ButtonEvent";
+import type { ButtonEvent } from "./ButtonEvent";
 
 export interface ClientOptions extends Discord.ClientOptions {
 	prefix: string;
@@ -18,6 +18,10 @@ export interface ClientOptions extends Discord.ClientOptions {
 
 export interface EventImport {
 	event: Event<keyof Discord.ClientEvents>;
+}
+
+export interface ComponentEventImport {
+	event: ButtonEvent;
 }
 
 export interface CommandImport {
@@ -54,12 +58,27 @@ export class Client extends Discord.Client {
 		return this;
 	}
 
+	public async addComponentEvents(path: string): Promise<this> {
+		const eventFiles = readdirSync(path);
+
+		for (const file of eventFiles) {
+			// eslint-disable-next-line no-await-in-loop
+			const { event } = (await import(
+				join(path, file)
+			)) as ComponentEventImport;
+
+			this.componentEvents.push(event);
+		}
+
+		return this;
+	}
+
 	public async addSlashCommands(path: string): Promise<this> {
 		try {
 			const commandFiles = readdirSync(path);
 			const commands: RESTPostAPIApplicationGuildCommandsJSONBody[] = [];
 
-			for (const file of commandFiles) {
+			for (const file of commandFiles.filter((f) => f.endsWith(".js"))) {
 				// eslint-disable-next-line no-await-in-loop
 				const { command } = (await import(
 					join(path, file)
@@ -97,7 +116,7 @@ export class Client extends Discord.Client {
 	public async addEvents(path: string): Promise<this> {
 		const eventFiles = readdirSync(path);
 
-		for (const file of eventFiles) {
+		for (const file of eventFiles.filter((f) => f.endsWith(".js"))) {
 			// eslint-disable-next-line no-await-in-loop
 			const { event } = (await import(join(path, file))) as EventImport;
 

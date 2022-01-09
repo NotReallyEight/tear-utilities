@@ -5,4 +5,3 @@ const SlashCommand_1 = require("../../utils/SlashCommand");
 exports.command = new SlashCommand_1.SlashCommand("ping", (interaction) => {
     void interaction.reply("Pong!");
 });
-//# sourceMappingURL=ping.js.map

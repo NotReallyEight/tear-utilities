@@ -14,4 +14,3 @@ exports.event = new Event_1.Event("interactionCreate", (client, interaction) => 
         void componentEvent.execute(interaction, client);
     }
 });
-//# sourceMappingURL=interactionCreate.js.map

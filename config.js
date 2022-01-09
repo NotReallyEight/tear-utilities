@@ -1,15 +1,11 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.config = void 0;
-const dotenv_1 = __importDefault(require("dotenv"));
-const node_process_1 = require("node:process");
+const tslib_1 = require("tslib");
+const dotenv_1 = (0, tslib_1.__importDefault)(require("dotenv"));
 dotenv_1.default.config();
 exports.config = {
-    token: node_process_1.env.TOKEN,
+    token: process.env.TOKEN,
     prefix: "t!",
     guildId: "918576105345146951",
 };
-//# sourceMappingURL=config.js.map

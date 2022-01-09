@@ -1,0 +1,12 @@
+{
+	"clean": true,
+	"entry": [
+		"src/commands/**/*.ts",
+		"src/events/**/*.ts",
+		"src/index.ts"
+	],
+	"minify": true,
+	"platform": "node",
+	"sourcemap": true,
+	"target": "es2021"
+}

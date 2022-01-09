@@ -46,26 +46,24 @@ export class Client extends Discord.Client {
 		}).setToken(config.token!);
 	}
 
-	public async addCommands(path: string): Promise<this> {
+	public addCommands(path: string): this {
 		const commandFiles = readdirSync(path);
 
 		for (const file of commandFiles) {
 			// eslint-disable-next-line no-await-in-loop
-			const { command } = (await import(join(path, file))) as CommandImport;
+			const { command } = require(join(path, file)) as CommandImport;
 
 			this.commands.push(command);
 		}
 		return this;
 	}
 
-	public async addComponentEvents(path: string): Promise<this> {
+	public addComponentEvents(path: string): this {
 		const eventFiles = readdirSync(path);
 
 		for (const file of eventFiles) {
 			// eslint-disable-next-line no-await-in-loop
-			const { event } = (await import(
-				join(path, file)
-			)) as ComponentEventImport;
+			const { event } = require(join(path, file)) as ComponentEventImport;
 
 			this.componentEvents.push(event);
 		}
@@ -80,9 +78,7 @@ export class Client extends Discord.Client {
 
 			for (const file of commandFiles.filter((f) => f.endsWith(".js"))) {
 				// eslint-disable-next-line no-await-in-loop
-				const { command } = (await import(
-					join(path, file)
-				)) as SlashCommandImport;
+				const { command } = require(join(path, file)) as SlashCommandImport;
 
 				this.slashCommands.push(command);
 
@@ -113,12 +109,12 @@ export class Client extends Discord.Client {
 		return this;
 	}
 
-	public async addEvents(path: string): Promise<this> {
+	public addEvents(path: string): this {
 		const eventFiles = readdirSync(path);
 
 		for (const file of eventFiles.filter((f) => f.endsWith(".js"))) {
 			// eslint-disable-next-line no-await-in-loop
-			const { event } = (await import(join(path, file))) as EventImport;
+			const { event } = require(join(path, file)) as EventImport;
 
 			if (event.once ?? false)
 				this.once(event.event, (...args) => {

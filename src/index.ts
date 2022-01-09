@@ -23,6 +23,4 @@ void client.addEvents(join(__dirname, "events"));
 
 void client.addSlashCommands(join(__dirname, "commands", "slash"));
 
-void client.addCommands(join(__dirname, "commands", "text"));
-
 void client.login(config.token);

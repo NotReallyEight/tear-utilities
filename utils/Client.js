@@ -25,7 +25,6 @@ class Client extends discord_js_1.default.Client {
     addCommands(path) {
         const commandFiles = (0, node_fs_1.readdirSync)(path);
         for (const file of commandFiles) {
-            // eslint-disable-next-line no-await-in-loop
             const { command } = require((0, node_path_1.join)(path, file));
             this.commands.push(command);
         }
@@ -34,7 +33,6 @@ class Client extends discord_js_1.default.Client {
     addComponentEvents(path) {
         const eventFiles = (0, node_fs_1.readdirSync)(path);
         for (const file of eventFiles) {
-            // eslint-disable-next-line no-await-in-loop
             const { event } = require((0, node_path_1.join)(path, file));
             this.componentEvents.push(event);
         }
@@ -45,11 +43,10 @@ class Client extends discord_js_1.default.Client {
             const commandFiles = (0, node_fs_1.readdirSync)(path);
             const commands = [];
             for (const file of commandFiles.filter((f) => f.endsWith(".js"))) {
-                // eslint-disable-next-line no-await-in-loop
                 const { command } = require((0, node_path_1.join)(path, file));
                 this.slashCommands.push(command);
+                // eslint-disable-next-line no-await-in-loop
                 do
-                    // eslint-disable-next-line no-await-in-loop
                     await this.wait(500);
                 while (!this.user);
                 commands.push({
@@ -72,7 +69,6 @@ class Client extends discord_js_1.default.Client {
     addEvents(path) {
         const eventFiles = (0, node_fs_1.readdirSync)(path);
         for (const file of eventFiles.filter((f) => f.endsWith(".js"))) {
-            // eslint-disable-next-line no-await-in-loop
             const { event } = require((0, node_path_1.join)(path, file));
             if (event.once ?? false)
                 this.once(event.event, (...args) => {

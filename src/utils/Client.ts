@@ -49,7 +49,7 @@ export class Client extends Discord.Client {
 	public addCommands(path: string): this {
 		const commandFiles = readdirSync(path);
 
-		for (const file of commandFiles) {
+		for (const file of commandFiles.filter((f) => f.endsWith(".js"))) {
 			const { command } = require(join(path, file)) as CommandImport;
 
 			this.commands.push(command);
@@ -60,7 +60,7 @@ export class Client extends Discord.Client {
 	public addComponentEvents(path: string): this {
 		const eventFiles = readdirSync(path);
 
-		for (const file of eventFiles) {
+		for (const file of eventFiles.filter((f) => f.endsWith(".js"))) {
 			const { event } = require(join(path, file)) as ComponentEventImport;
 
 			this.componentEvents.push(event);

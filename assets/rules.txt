@@ -1,0 +1,25 @@
+**Welcome to Tear Paradise.**
+
+Tear Paradise is a chill hangout server where you can meet and hangout with people all around the world!
+
+To get started with server, check out the <#918798759138324510> channel. And start chatting in <#918576105806524416>!
+
+Below are a list of rules you must follow in this server. This is not a full list of all the rules, so please use common sense before taking any action.
+
+**Rules**
+
+> **1.** Spam of any kind is strictly prohibited. This includes but is not limited to sending large walls of text, sending too many messages in a short period of time, etc.
+> **2.** Asking for promotion is strictly prohibited. If we think you are ready to become a staff member, you will receive a DM after we review your staff application.
+> **3.** Being offensive is strictly prohibited. Please behave the same way you want anyone to behave with you.
+> **4.** Discriminations of any kind are strictly prohibited. This includes but is not limited to discriminations based on gender, race, sexuality, etc.
+> **5.** Sending personal information of any kind is strictly prohibited. This includes but is not limited to IP addresses, IRL names, Identity Cards, etc.
+> **6.** Sending executable files of any kind is strictly prohibited. This includes but is not limited to files with `.py`, `.exe`, `.deb`, `.bat`, `.apk` extensions.
+> **7.** Self promotion is strictly prohibited. This includes but is not limited to advertisements, server invites, etc. without permission from a staff member.
+> **8.** NSFW (Not Safe For Work) content is strictly prohibited. This includes but is not limited to text, images or links featuring nudity, sex, hard violence or other graphically disturbing content.
+> **9.** Use the correct chats for their usage. We have plenty of channels, so we kindly ask you to use the correct channels. E.g.: use bot commands in the #bot-commands channel.
+> **10.** Follow Discord's Terms of Service (<https://discord.com/terms>) and Discord's Community Guidelines (<https://discord.com/guidelines>)
+
+If you see something that breaks the rules let staff know, we want this server to be a welcoming space!
+
+_Rules are subject to change without further notice, and it's up to the user to stay up to date with them._
+_By joining this server, you automatically agree with the server rules. Failing to do so will result in an immediate punishment from the staff team._

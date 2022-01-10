@@ -1,0 +1,39 @@
+**Channels**
+
+<#918600970311712808> - Here are the rules of the server, be sure to read them before anything else!
+<#918798759138324510> - Here you can find all the information needed to have a good stay in the server!
+
+<#918576105806524416> - The general chat of the server. Here you can chat and hang out with friends all around the globe!
+<#919667481159807067> - The media chat of the server. You can post your memes or random cat photos here!
+<#919624964041236531> - Use all bot commands here. Type `/` to get all slash commands!
+
+<#919667339455258694> - The art channel of the server. Here you can show off your amazing art skills!
+<#919667407302299659> - The music channel of the server. Here you can share all the songs you love the most!
+
+<#918576105806524418> - The general voice chat of the server. Here you can hang out with friends all around the globe with your real voice! :eyes:
+
+---
+
+**Roles**
+*Moderation Team*
+<@&918799846561972234> - The owner of the server, <@489031280147693568> is the bad guy.
+<@&919619666534608916> - The administrators team, they are just overpowered. Don't let them become angry because they have the hammer.
+<@&918883646318989417> - The moderators of the server, no life people and extremely active ||(hopefully)||. Senior people.
+<@&919617485517520957> - The newbies of the staff team, really friendly and helpful!
+<@&918800131623628810> - The staff team, helps to keep this place safe and good for everyone.
+
+*Level Roles*
+<@&918862325639946260> - Level 40.
+<@&918862238364868639> - Level 35.
+<@&918862178054991872> - Level 30.
+<@&918862111986290718> - Level 25.
+<@&918862041962410084> - Level 20, adds permissions to create Public and Private threads and to add reactions.
+<@&918861945245958184> - Level 15, adds `Change nickname` permission.
+<@&918861856439947304> - Level 10, adds additional `Voice Chat` permissions, such as `Start activities`.
+<@&918861283258941481> - Level 5, adds `Embed links` and `Attach files` permissions.
+
+*Other Roles*
+
+<@&918904468366565447> - The boosters of the server, big supporters of our server!
+<@&918850815773528074> - All the members of the server.
+<@&929726838866071583> - Bots beings created by amazing developers.

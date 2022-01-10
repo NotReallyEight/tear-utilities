@@ -9,7 +9,7 @@ export const command = new Command(
 		try {
 			const text = args.join(" ");
 
-			let result: string = (await (0, eval)(text)) as string;
+			let result: string = (await eval(text)) as string;
 			const typeOfResult = typeof result;
 			if (typeOfResult === "object") {
 				result = util.inspect(result);

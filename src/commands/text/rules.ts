@@ -2,6 +2,7 @@ import { Command } from "../../utils/Command";
 import { createReadStream } from "node:fs";
 import { join } from "node:path";
 import { Logger } from "../../utils/Logger";
+import { config } from "../../config";
 
 export const command = new Command("rules", (message) => {
 	try {
@@ -20,7 +21,7 @@ export const command = new Command("rules", (message) => {
 					{
 						title: "Rules",
 						description: rules,
-						color: 0x29abe2,
+						color: config.commandsEmbedsColor,
 					},
 				],
 			});

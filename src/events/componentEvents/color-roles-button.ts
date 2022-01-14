@@ -14,7 +14,7 @@ export const event = new ComponentEvent(
 
 			let colorRole: Role | undefined;
 
-			for (const role of Object.values(config.roles))
+			for (const role of Object.values(config.roles.colorRoles))
 				if (
 					(interaction.member.roles as GuildMemberRoleManager).cache.has(role)
 				) {
@@ -29,70 +29,70 @@ export const event = new ComponentEvent(
 					customId: "color-roles-select",
 					disabled: false,
 					maxValues: 1,
-					minValues: 1,
+					minValues: 0,
 					options: [
 						{
 							label: "Black",
-							value: `color-roles-${config.roles.black}`,
+							value: `color-roles-${config.roles.colorRoles.black}`,
 							description: "Black like the night!",
 							emoji: "🌙",
-							default: colorRole?.id === config.roles.black,
+							default: colorRole?.id === config.roles.colorRoles.black,
 						},
 						{
 							label: "Blue",
-							value: `color-roles-${config.roles.blue}`,
+							value: `color-roles-${config.roles.colorRoles.blue}`,
 							description: "Blue like the sky!",
 							emoji: "🏞️",
-							default: colorRole?.id === config.roles.blue,
+							default: colorRole?.id === config.roles.colorRoles.blue,
 						},
 						{
 							label: "Blurple",
-							value: `color-roles-${config.roles.blurple}`,
+							value: `color-roles-${config.roles.colorRoles.blurple}`,
 							description: "Blurple like Discord!",
 							emoji: "<:tp_discord_logo:931199150865911828>",
-							default: colorRole?.id === config.roles.blurple,
+							default: colorRole?.id === config.roles.colorRoles.blurple,
 						},
 						{
 							label: "Green",
-							value: `color-roles-${config.roles.green}`,
+							value: `color-roles-${config.roles.colorRoles.green}`,
 							description: "Green like the grass!",
 							emoji: "🌱",
-							default: colorRole?.id === config.roles.green,
+							default: colorRole?.id === config.roles.colorRoles.green,
 						},
 						{
 							label: "Orange",
-							value: `color-roles-${config.roles.orange}`,
+							value: `color-roles-${config.roles.colorRoles.orange}`,
 							description: "Orange like an orange!",
 							emoji: "🍊",
-							default: colorRole?.id === config.roles.orange,
+							default: colorRole?.id === config.roles.colorRoles.orange,
 						},
 						{
 							label: "Pink",
-							value: `color-roles-${config.roles.pink}`,
+							value: `color-roles-${config.roles.colorRoles.pink}`,
 							description: "Pink like a rose!",
 							emoji: "🌹",
-							default: colorRole?.id === config.roles.pink,
+							default: colorRole?.id === config.roles.colorRoles.pink,
 						},
 						{
 							label: "Purple",
-							value: `color-roles-${config.roles.purple}`,
+							value: `color-roles-${config.roles.colorRoles.purple}`,
 							description: "Purple like grapes!",
 							emoji: "🍇",
-							default: colorRole?.id === config.roles.purple,
+							default: colorRole?.id === config.roles.colorRoles.purple,
 						},
 						{
 							label: "Red",
-							value: `color-roles-${config.roles.red}`,
+							value: `color-roles-${config.roles.colorRoles.red}`,
 							description: "Red like the fire!",
 							emoji: "🔥",
-							default: colorRole?.id === config.roles.red,
+							default: colorRole?.id === config.roles.colorRoles.red,
 						},
 						{
 							label: "White",
-							value: `color-roles-${config.roles.white}`,
+							value: `color-roles-${config.roles.colorRoles.white}`,
 							description: "White like the snow!",
 							emoji: "🌨",
-							default: colorRole?.id === config.roles.white,
+							default: colorRole?.id === config.roles.colorRoles.white,
 						},
 					],
 					type: "SELECT_MENU",

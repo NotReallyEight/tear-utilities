@@ -3,12 +3,12 @@ import { Logger } from "../../utils/Logger";
 import { config } from "../../config";
 
 export const event = new ComponentEvent(
-	"color-roles-select",
+	"pronoun-roles-select",
 	async (interaction) => {
 		try {
 			await interaction.deferUpdate();
 
-			const roleIds = Object.values(config.roles.colorRoles);
+			const roleIds = Object.values(config.roles.pronounRoles);
 			if (!interaction.isSelectMenu() || !interaction.inCachedGuild()) return;
 
 			const newRoles = interaction.member.roles.cache
@@ -16,7 +16,7 @@ export const event = new ComponentEvent(
 				.filter((r) => !roleIds.includes(r));
 
 			if (interaction.values.length)
-				newRoles.push(interaction.values[0].split("-")[2]);
+				interaction.values.forEach((v) => newRoles.push(v.split("-")[2]));
 
 			await interaction.member.roles.set(newRoles);
 		} catch (err: any) {

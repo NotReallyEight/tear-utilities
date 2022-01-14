@@ -59,10 +59,7 @@ export const command = new SlashCommand(
 		}
 	},
 	{
-		custom: (interaction) => {
-			if (interaction.member?.user.id !== "489031280147693568") return false;
-			return true;
-		},
+		custom: (interaction) => interaction.user.id === "489031280147693568",
 	},
 	{
 		description: "Suggest a feature you would like to see in the server.",

@@ -24,7 +24,7 @@ export const command = new SlashCommand(
 				title: "New Suggestion!",
 				description: interaction.options.getString("suggestion", true),
 				footer: {
-					text: `Suggested by ${interaction.member.user.tag}`,
+					text: `Suggested by ${interaction.user.tag}`,
 					icon_url: interaction.member.displayAvatarURL(),
 				},
 				color: config.commandsEmbedsColor,

@@ -22,7 +22,7 @@ export const command = new SlashCommand(
 
 			const embed: APIEmbed = {
 				title: "New Suggestion!",
-				description: interaction.options.data[0].value as string,
+				description: interaction.options.getString("suggestion", true),
 				footer: {
 					text: `Suggested by ${interaction.member.user.tag}`,
 					icon_url: interaction.member.displayAvatarURL(),

@@ -12,7 +12,9 @@ export const command = new SlashCommand(
 		try {
 			if (!interaction.isCommand() || !interaction.inCachedGuild()) return;
 
-			await interaction.deferReply();
+			await interaction.deferReply({
+				ephemeral: true,
+			});
 
 			const channel = interaction.guild.channels.cache.get(
 				config.logs.suggestions

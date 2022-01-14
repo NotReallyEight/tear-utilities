@@ -1,5 +1,5 @@
-import type { APIEmbed } from "discord-api-types/payloads";
-import { ApplicationCommandType } from "discord-api-types/payloads";
+import type { APIEmbed } from "discord-api-types/v9";
+import { ApplicationCommandType } from "discord-api-types/v9";
 import { SlashCommand } from "../../utils/SlashCommand";
 import { config } from "../../config";
 import { Logger } from "../../utils/Logger";

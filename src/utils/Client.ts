@@ -89,15 +89,13 @@ export class Client extends Discord.Client {
 					description: command.description,
 					options: command.options?.options ?? undefined,
 				});
-
-				// eslint-disable-next-line no-await-in-loop
-				await this.restClient?.put(
-					Routes.applicationGuildCommands(this.user.id, config.guildId),
-					{
-						body: commands,
-					}
-				);
 			}
+			await this.restClient?.put(
+				Routes.applicationGuildCommands(this.user!.id, config.guildId),
+				{
+					body: commands,
+				}
+			);
 		} catch (error: any) {
 			Logger.error((error as Error).message);
 		}

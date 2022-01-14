@@ -32,4 +32,7 @@ export const config = {
 			poll: "931505332788817930",
 		},
 	},
+	logs: {
+		suggestions: "931589783740883015",
+	},
 };

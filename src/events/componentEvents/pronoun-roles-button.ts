@@ -55,7 +55,7 @@ export const event = new ComponentEvent(
 
 			await interaction.reply({
 				ephemeral: true,
-				content: "Please select one of the following roles:",
+				content: "Please select your pronouns:",
 				components: [row],
 			});
 		} catch (err: any) {

@@ -72,7 +72,7 @@ export const event = new ComponentEvent(
 
 			await interaction.reply({
 				ephemeral: true,
-				content: "Please select one of the following roles:",
+				content: "Please select your roles based on the pings you want:",
 				components: [row],
 			});
 		} catch (err: any) {

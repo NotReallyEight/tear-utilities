@@ -2,13 +2,14 @@ import { ComponentEvent } from "../../utils/ComponentEvent";
 import { Logger } from "../../utils/Logger";
 import { config } from "../../config";
 
+const roleIds = Object.values(config.roles.pronounRoles);
+
 export const event = new ComponentEvent(
 	"pronoun-roles-select",
 	async (interaction) => {
 		try {
 			await interaction.deferUpdate();
 
-			const roleIds = Object.values(config.roles.pronounRoles);
 			if (!interaction.isSelectMenu() || !interaction.inCachedGuild()) return;
 
 			const newRoles = interaction.member.roles.cache

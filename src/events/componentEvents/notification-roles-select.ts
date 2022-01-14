@@ -2,10 +2,10 @@ import { ComponentEvent } from "../../utils/ComponentEvent";
 import { Logger } from "../../utils/Logger";
 import { config } from "../../config";
 
-const roleIds = Object.values(config.roles.colorRoles);
+const roleIds = Object.values(config.roles.notificationRoles);
 
 export const event = new ComponentEvent(
-	"color-roles-select",
+	"notification-roles-select",
 	async (interaction) => {
 		try {
 			await interaction.deferUpdate();
@@ -17,7 +17,7 @@ export const event = new ComponentEvent(
 				.filter((r) => !roleIds.includes(r));
 
 			if (interaction.values.length)
-				newRoles.push(interaction.values[0].split("-")[2]);
+				interaction.values.forEach((v) => newRoles.push(v.split("-")[2]));
 
 			await interaction.member.roles.set(newRoles);
 		} catch (err: any) {

@@ -1,4 +1,4 @@
-import type { GuildMemberRoleManager, Role } from "discord.js";
+import type { GuildMemberRoleManager } from "discord.js";
 import { MessageActionRow } from "discord.js";
 import { ComponentEvent } from "../../utils/ComponentEvent";
 import { Logger } from "../../utils/Logger";
@@ -12,54 +12,58 @@ export const event = new ComponentEvent(
 
 			if (!interaction.inGuild()) return;
 
-			let colorRole: Role | undefined;
+			const notificationRoles: string[] = [];
 
 			for (const role of Object.values(config.roles.notificationRoles))
 				if (
 					(interaction.member.roles as GuildMemberRoleManager).cache.has(role)
 				) {
-					colorRole = (
-						interaction.member.roles as GuildMemberRoleManager
-					).cache.get(role);
-					break;
+					notificationRoles.push(
+						(interaction.member.roles as GuildMemberRoleManager).cache.get(
+							role
+						)!.id
+					);
+					continue;
 				}
 
 			const row = new MessageActionRow().addComponents([
 				{
 					customId: "notification-roles-select",
 					disabled: false,
-					maxValues: Object.keys(config.roles.notificationRoles).length,
+					maxValues: 4,
 					minValues: 0,
 					options: [
 						{
 							label: "Announcement Ping",
-							description: "Receive a ping when a new announcement is made!",
 							emoji: "<:tp_announcement:931508832557993994>",
 							value: `notification-roles-${config.roles.notificationRoles.announcement}`,
-							default:
-								colorRole?.id === config.roles.notificationRoles.announcement,
+							default: notificationRoles.includes(
+								config.roles.notificationRoles.announcement
+							),
 						},
 						{
 							label: "Event Ping",
-							description: "Receive a ping when a new event is hosted!",
 							emoji: "🎉",
 							value: `notification-roles-${config.roles.notificationRoles.event}`,
-							default: colorRole?.id === config.roles.notificationRoles.event,
+							default: notificationRoles.includes(
+								config.roles.notificationRoles.event
+							),
 						},
 						{
 							label: "Giveaway Ping",
 							emoji: "🎉",
-							description: "Receive a ping when a new giveaway is hosted!",
 							value: `notification-roles-${config.roles.notificationRoles.giveaway}`,
-							default:
-								colorRole?.id === config.roles.notificationRoles.giveaway,
+							default: notificationRoles.includes(
+								config.roles.notificationRoles.giveaway
+							),
 						},
 						{
 							label: "Poll Ping",
 							emoji: "<:tp_poll:931509382334787645>",
-							description: "Receive a ping when a new poll is published!",
 							value: `notification-roles-${config.roles.notificationRoles.poll}`,
-							default: colorRole?.id === config.roles.notificationRoles.poll,
+							default: notificationRoles.includes(
+								config.roles.notificationRoles.poll
+							),
 						},
 					],
 					type: "SELECT_MENU",

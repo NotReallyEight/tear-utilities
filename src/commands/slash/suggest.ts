@@ -30,7 +30,7 @@ export const command = new SlashCommand(
 				color: config.commandsEmbedsColor,
 			};
 
-			const row = new MessageActionRow().addComponents([
+			const row = new MessageActionRow().addComponents(
 				{
 					customId: "suggestion-accept",
 					disabled: false,
@@ -46,8 +46,8 @@ export const command = new SlashCommand(
 					label: "Decline",
 					style: "DANGER",
 					type: "BUTTON",
-				},
-			]);
+				}
+			);
 			await channel.send({
 				embeds: [embed],
 				components: [row],

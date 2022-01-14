@@ -10,8 +10,6 @@ export const event = new ComponentEvent(
 		try {
 			if (!interaction.isButton() || !interaction.inCachedGuild()) return;
 
-			await interaction.deferUpdate();
-
 			const channel = interaction.guild.channels.cache.get(
 				config.logs.approvedSuggestions
 			) as GuildTextBasedChannel;

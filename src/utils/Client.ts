@@ -9,7 +9,7 @@ import type { RESTPostAPIApplicationGuildCommandsJSONBody } from "discord-api-ty
 import { Routes } from "discord-api-types/v9";
 import { config } from "../config";
 import { Logger } from "./Logger";
-import type { ButtonEvent } from "./ButtonEvent";
+import type { ComponentEvent } from "./ComponentEvent";
 
 export interface ClientOptions extends Discord.ClientOptions {
 	prefix: string;
@@ -21,7 +21,7 @@ export interface EventImport {
 }
 
 export interface ComponentEventImport {
-	event: ButtonEvent;
+	event: ComponentEvent;
 }
 
 export interface CommandImport {
@@ -34,7 +34,7 @@ export interface SlashCommandImport {
 
 export class Client extends Discord.Client {
 	commands: Command[] = [];
-	componentEvents: ButtonEvent[] = [];
+	componentEvents: ComponentEvent[] = [];
 	prefix: string;
 	restClient?: REST;
 	slashCommands: SlashCommand[] = [];

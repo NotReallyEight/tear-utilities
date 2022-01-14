@@ -6,21 +6,21 @@ export type ButtonEventFn = (
 	client: Client
 ) => Promise<void> | void;
 
-export interface ButtonEventRequirements {
+export interface ComponentEventRequirements {
 	custom?: (
 		interaction: MessageComponentInteraction,
 		client: Client
 	) => Promise<boolean> | boolean;
 }
 
-export class ButtonEvent {
+export class ComponentEvent {
 	name: string;
 	fn: ButtonEventFn;
-	requirements: ButtonEventRequirements;
+	requirements: ComponentEventRequirements;
 	constructor(
 		name: string,
 		fn: ButtonEventFn,
-		requirements?: ButtonEventRequirements
+		requirements?: ComponentEventRequirements
 	) {
 		this.name = name;
 		this.fn = fn;
@@ -51,7 +51,7 @@ export class ButtonEvent {
 	}
 
 	private async _enoughRequirements(
-		requirements: ButtonEventRequirements,
+		requirements: ComponentEventRequirements,
 		interaction: MessageComponentInteraction,
 		client: Client
 	) {

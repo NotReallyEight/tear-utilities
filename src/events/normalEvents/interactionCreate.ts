@@ -1,4 +1,4 @@
-import { Event } from "../utils/Event";
+import { Event } from "../../utils/Event";
 
 export const event = new Event("interactionCreate", (client, interaction) => {
 	if (interaction.isCommand()) {

@@ -2,7 +2,7 @@ import { ComponentEvent } from "../../utils/ComponentEvent";
 import { Logger } from "../../utils/Logger";
 import { config } from "../../config";
 import type { GuildTextBasedChannel } from "discord.js";
-import type { APIEmbed } from "discord-api-types/payloads";
+import type { APIEmbed } from "discord-api-types/v9";
 
 export const event = new ComponentEvent(
 	"suggestion-decline",

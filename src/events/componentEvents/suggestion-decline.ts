@@ -17,7 +17,9 @@ export const event = new ComponentEvent(
 			await interaction.message.delete();
 
 			const embed: APIEmbed = {
-				title: "Suggestion Declined",
+				title: `Suggestion Declined #${
+					interaction.message.embeds[0].title!.split("#")[1]
+				}`,
 				description: interaction.message.embeds[0].description!,
 				footer: interaction.message.embeds[0].footer!,
 				color: config.commandsEmbedsColor,

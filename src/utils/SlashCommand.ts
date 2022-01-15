@@ -1,7 +1,10 @@
 import type { APIApplicationCommandOption } from "discord-api-types/v9";
 import { ApplicationCommandType } from "discord-api-types/v9";
 import type Discord from "discord.js";
-import type { BaseCommandInteraction } from "discord.js";
+import type {
+	AutocompleteInteraction,
+	BaseCommandInteraction,
+} from "discord.js";
 import type { Client } from "./Client";
 
 export interface SlashCommandRequirements {
@@ -25,7 +28,15 @@ export interface CommandOptions {
 	type: ApplicationCommandType;
 }
 
+export interface AutocompleteFn {
+	(
+		interaction: Discord.AutocompleteInteraction,
+		client: Client
+	): Promise<void> | void;
+}
+
 export class SlashCommand {
+	autocomplete?: AutocompleteFn;
 	name: string;
 	description: string;
 	fn: CommandFn;
@@ -35,11 +46,13 @@ export class SlashCommand {
 	constructor(
 		name: string,
 		fn: CommandFn,
+		autocomplete?: AutocompleteFn,
 		requirements?: SlashCommandRequirements,
 		options?: CommandOptions
 	) {
 		this.name = name;
 		this.fn = fn;
+		this.autocomplete = autocomplete;
 		this.requirements = {};
 		if (requirements)
 			if (requirements.custom) this.requirements.custom = requirements.custom;
@@ -68,6 +81,16 @@ export class SlashCommand {
 		if (!(await this.checkPermissions(interaction, client))) return false;
 
 		void this.fn(interaction, client);
+
+		return true;
+	}
+
+	public executeAutocomplete(
+		interaction: AutocompleteInteraction,
+		client: Client
+	): boolean {
+		if (!this.autocomplete) return false;
+		void this.autocomplete(interaction, client);
 
 		return true;
 	}

@@ -15,14 +15,36 @@ export const command = new SlashCommand(
 			await interaction.deferReply({
 				ephemeral: true,
 			});
+			const suggestionChannel = interaction.guild.channels.cache.get(
+				config.logs.suggestions
+			)!;
+
+			if (suggestionChannel.isThread() || !suggestionChannel.isText()) return;
+
+			let message = suggestionChannel.messages.cache.get("931837510408089622");
+
+			if (!message)
+				message = await suggestionChannel.messages.fetch("931837510408089622");
+
+			const splitted = message.content.split(":");
+
+			let lastSuggestionId: number;
+
+			if (!splitted[1].length) {
+				await message.edit(`${splitted[0]}:1`);
+				lastSuggestionId = 1;
+			} else {
+				await message.edit(`${splitted[0]}:${parseInt(splitted[1]) + 1}`);
+				lastSuggestionId = parseInt(splitted[1]) + 1;
+			}
 
 			const channel = interaction.guild.channels.cache.get(
 				config.logs.suggestions
 			) as GuildTextBasedChannel;
 
 			const embed: APIEmbed = {
-				title: "New Suggestion!",
-				description: interaction.options.getString("suggestion", true),
+				title: `New Suggestion! #${lastSuggestionId}`,
+				description: `${interaction.options.getString("suggestion", true)}`,
 				footer: {
 					text: `Suggested by ${interaction.user.tag}`,
 					icon_url: interaction.member.displayAvatarURL(),
@@ -58,6 +80,7 @@ export const command = new SlashCommand(
 			Logger.error(`${(err as Error).name}: ${(err as Error).message}`);
 		}
 	},
+	undefined,
 	{
 		custom: (interaction) => interaction.user.id === "489031280147693568",
 	},

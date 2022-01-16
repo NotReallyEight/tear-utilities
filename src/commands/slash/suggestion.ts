@@ -3,7 +3,7 @@ import { Logger } from "../../utils/Logger";
 import {
 	ApplicationCommandType,
 	ApplicationCommandOptionType,
-} from "discord-api-types/payloads";
+} from "discord-api-types/v9";
 import { config } from "../../config";
 import type { ApplicationCommandOptionChoice } from "discord.js";
 
@@ -48,8 +48,7 @@ export const command = new SlashCommand(
 			switch (interaction.options.data[0].name) {
 				case "accept":
 					approvedMessages
-						.filter((m) => m.author.bot)
-						.filter((m) => m.embeds[0].title!.split("#")[1].length > 0)
+						.filter((m) => m.author.bot && m.embeds[0].title!.split("#")[1].length > 0)
 						.map((m) => m.embeds[0].title!.split("#")[1])
 						.forEach((s) => {
 							toRespond.push({
@@ -62,8 +61,7 @@ export const command = new SlashCommand(
 					break;
 				case "decline":
 					declinedMessages
-						.filter((m) => m.author.bot)
-						.filter((m) => m.embeds[0].title!.split("#")[1].length > 0)
+						.filter((m) => m.author.bot && m.embeds[0].title!.split("#")[1].length > 0)
 						.map((m) => m.embeds[0].title!.split("#")[1])
 						.forEach((s) => {
 							toRespond.push({

@@ -58,11 +58,11 @@ export const command = new Command(
 						fields: [
 							{
 								name: "Input",
-								value: `\`\`\`js\n${text.slice(0, 2048 - 9)}\`\`\``,
+								value: `\`\`\`js\n${text.slice(0, 1024 - 9)}\`\`\``,
 							},
 							{
 								name: "Output",
-								value: `\`\`\`js\n${result.slice(0, 2048 - 9)}\`\`\``,
+								value: `\`\`\`js\n${result.slice(0, 1024 - 9)}\`\`\``,
 							},
 							{
 								name: "Type",

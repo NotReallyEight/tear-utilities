@@ -21,10 +21,7 @@ export const command = new SlashCommand(
 
 			if (suggestionChannel.isThread() || !suggestionChannel.isText()) return;
 
-			let message = suggestionChannel.messages.cache.get("931837510408089622");
-
-			if (!message)
-				message = await suggestionChannel.messages.fetch("931837510408089622");
+			const message = suggestionChannel.messages.cache.get("931837510408089622") ?? await suggestionChannel.messages.fetch("931837510408089622");
 
 			const splitted = message.content.split(":");
 

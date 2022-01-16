@@ -3,7 +3,7 @@ import { Logger } from "../../utils/Logger";
 import {
 	ApplicationCommandType,
 	ApplicationCommandOptionType,
-} from "discord-api-types/payloads";
+} from "discord-api-types/v9";
 import { config } from "../../config";
 import type { ApplicationCommandOptionChoice } from "discord.js";
 

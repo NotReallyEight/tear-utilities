@@ -2,8 +2,7 @@ import { Event } from "../../utils/Event";
 
 export const event = new Event("interactionCreate", (client, interaction) => {
 	if (interaction.isAutocomplete())
-		if (client.slashCommands.find((c) => c.name === interaction.commandName))
-			void client.processAutocompleteInteraction(interaction);
+		void client.processAutocompleteInteraction(interaction);
 
 	if (interaction.isCommand()) {
 		if (client.slashCommands.find((c) => c.name === interaction.commandName))

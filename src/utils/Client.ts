@@ -89,15 +89,13 @@ export class Client extends Discord.Client {
 					description: command.description,
 					options: command.options?.options ?? undefined,
 				});
-
-				// eslint-disable-next-line no-await-in-loop
-				await this.restClient?.put(
-					Routes.applicationGuildCommands(this.user.id, config.guildId),
-					{
-						body: commands,
-					}
-				);
 			}
+			await this.restClient?.put(
+				Routes.applicationGuildCommands(this.user!.id, config.guildId),
+				{
+					body: commands,
+				}
+			);
 		} catch (error: any) {
 			Logger.error((error as Error).message);
 		}
@@ -152,6 +150,16 @@ export class Client extends Discord.Client {
 	public mentionPrefixRegExp(): RegExp | null {
 		if (this.user) return new RegExp(`^<@!?${this.user.id}>\\s?`);
 		return null;
+	}
+
+	public processAutocompleteInteraction(
+		interaction: Discord.AutocompleteInteraction
+	): boolean {
+		return Boolean(
+			this.slashCommands
+				.find((c) => c.name === interaction.commandName)
+				?.executeAutocomplete(interaction, this)
+		);
 	}
 
 	public async processCommand(message: Discord.Message): Promise<boolean> {

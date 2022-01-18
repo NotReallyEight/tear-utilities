@@ -6,6 +6,7 @@ export const command = new SlashCommand(
 		void interaction.reply("Pong!");
 	},
 	undefined,
+	undefined,
 	{
 		description: "Pong!",
 		type: 1,

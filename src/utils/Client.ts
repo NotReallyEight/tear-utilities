@@ -155,9 +155,11 @@ export class Client extends Discord.Client {
 	public processAutocompleteInteraction(
 		interaction: Discord.AutocompleteInteraction
 	): boolean {
-		return Boolean(this.slashCommands.find(
-			(c) => c.name === interaction.commandName
-		)?.executeAutocomplete(interaction, this));
+		return Boolean(
+			this.slashCommands
+				.find((c) => c.name === interaction.commandName)
+				?.executeAutocomplete(interaction, this)
+		);
 	}
 
 	public async processCommand(message: Discord.Message): Promise<boolean> {

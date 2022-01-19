@@ -4,7 +4,6 @@ import { SlashCommand } from "../../utils/SlashCommand";
 import { config } from "../../config";
 import { Logger } from "../../utils/Logger";
 import type { GuildTextBasedChannel } from "discord.js";
-import { MessageActionRow } from "discord.js";
 
 export const command = new SlashCommand(
 	"suggest",
@@ -21,7 +20,9 @@ export const command = new SlashCommand(
 
 			if (suggestionChannel.isThread() || !suggestionChannel.isText()) return;
 
-			const message = suggestionChannel.messages.cache.get("931837510408089622") ?? await suggestionChannel.messages.fetch("931837510408089622");
+			const message =
+				suggestionChannel.messages.cache.get("931837510408089622") ??
+				(await suggestionChannel.messages.fetch("931837510408089622"));
 
 			const splitted = message.content.split(":");
 
@@ -41,36 +42,23 @@ export const command = new SlashCommand(
 
 			const embed: APIEmbed = {
 				title: `New Suggestion! #${lastSuggestionId}`,
-				description: `${interaction.options.getString("suggestion", true)}`,
+				description: `${interaction.options.getString(
+					"suggestion",
+					true
+				)}\n\n_Suggested by ${interaction.user.tag}_`,
 				footer: {
-					text: `Suggested by ${interaction.user.tag}`,
+					text: `Upvotes : 0 | Downvotes : 0`,
 					icon_url: interaction.member.displayAvatarURL(),
 				},
 				color: config.commandsEmbedsColor,
 			};
 
-			const row = new MessageActionRow().addComponents(
-				{
-					customId: "suggestion-accept",
-					disabled: false,
-					emoji: "✅",
-					label: "Accept",
-					style: "SUCCESS",
-					type: "BUTTON",
-				},
-				{
-					customId: "suggestion-decline",
-					disabled: false,
-					emoji: "❌",
-					label: "Decline",
-					style: "DANGER",
-					type: "BUTTON",
-				}
-			);
-			await channel.send({
+			const suggestionMessage = await channel.send({
 				embeds: [embed],
-				components: [row],
 			});
+
+			await suggestionMessage.react("👍");
+			await suggestionMessage.react("👎");
 
 			await interaction.editReply("Suggestion sent!");
 		} catch (err: any) {

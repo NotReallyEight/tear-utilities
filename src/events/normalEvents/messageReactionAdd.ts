@@ -21,6 +21,7 @@ export const event = new Event(
 
 			const message = await channel.messages.fetch(reaction.message.id)!;
 
+			if (message.channel.id !== config.logs.suggestions || message.guild == null) return;
 			const embed: APIEmbed = {
 				title: message.embeds[0].title!,
 				description: message.embeds[0].description!,

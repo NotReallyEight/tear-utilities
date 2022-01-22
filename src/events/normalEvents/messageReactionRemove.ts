@@ -15,7 +15,7 @@ export const event = new Event(
 
 			const channel = client.channels.cache.get(config.logs.suggestions)!;
 
-			if (!channel.isText() || reaction.message.guild == null) return;
+			if (!channel.isText()) return;
 
 			const message = await channel.messages.fetch(reaction.message.id)!;
 

@@ -43,7 +43,7 @@ export const event = new Event(
 					embed.footer!.text = `Upvotes : ${
 						message.embeds[0].footer!.text.split(" : ")[1].split(" | ")[0]
 					} | Downvotes : ${
-						parseFloat(message.embeds[0].footer!.text.split(" : ")[2]) - 1
+						Number(message.embeds[0].footer!.text.split(" : ")[2]) - 1
 					}`;
 					break;
 

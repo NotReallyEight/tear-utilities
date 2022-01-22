@@ -33,7 +33,7 @@ export const event = new Event(
 			switch (reaction.emoji.name) {
 				case "👍":
 					embed.footer!.text = `Upvotes : ${
-						parseFloat(
+						Number(
 							message.embeds[0].footer!.text.split(" : ")[1].split(" | ")[0]
 						) - 1
 					} | Downvotes : ${message.embeds[0].footer!.text.split(" : ")[2]}`;

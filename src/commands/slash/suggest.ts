@@ -20,7 +20,9 @@ export const command = new SlashCommand(
 
 			if (suggestionChannel.isThread() || !suggestionChannel.isText()) return;
 
-			const message = await suggestionChannel.messages.fetch("931837510408089622");
+			const message = await suggestionChannel.messages.fetch(
+				"931837510408089622"
+			);
 
 			const splitted = message.content.split(":");
 
@@ -55,7 +57,10 @@ export const command = new SlashCommand(
 				embeds: [embed],
 			});
 
-			await Promise.all(suggestionMessage.react("👍"), suggestionMessage.react("👎"));
+			await Promise.all([
+				suggestionMessage.react("👍"),
+				suggestionMessage.react("👎"),
+			]);
 
 			await interaction.editReply("Suggestion sent!");
 		} catch (err: any) {

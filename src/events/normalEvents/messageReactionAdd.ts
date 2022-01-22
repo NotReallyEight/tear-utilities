@@ -8,6 +8,8 @@ export const event = new Event(
 	async (client, reaction, user) => {
 		try {
 			if (
+				!reaction.message.channel.isText() ||
+				reaction.message.channel.id !== config.logs.suggestions ||
 				reaction.message.id === "931837510408089622" ||
 				user.bot
 			)
@@ -15,7 +17,7 @@ export const event = new Event(
 
 			const channel = client.channels.cache.get(config.logs.suggestions)!;
 
-			if (!channel.isText()) return;
+			if (!channel.isText() || reaction.message.guild == null) return;
 
 			const message = await channel.messages.fetch(reaction.message.id)!;
 

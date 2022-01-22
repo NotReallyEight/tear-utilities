@@ -55,8 +55,7 @@ export const command = new SlashCommand(
 				embeds: [embed],
 			});
 
-			await suggestionMessage.react("👍");
-			await suggestionMessage.react("👎");
+			await Promise.all(suggestionMessage.react("👍"), suggestionMessage.react("👎"));
 
 			await interaction.editReply("Suggestion sent!");
 		} catch (err: any) {

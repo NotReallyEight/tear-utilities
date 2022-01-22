@@ -8,8 +8,6 @@ export const event = new Event(
 	async (client, reaction, user) => {
 		try {
 			if (
-				!reaction.message.channel.isText() ||
-				reaction.message.channel.id !== config.logs.suggestions ||
 				reaction.message.id === "931837510408089622" ||
 				user.bot
 			)

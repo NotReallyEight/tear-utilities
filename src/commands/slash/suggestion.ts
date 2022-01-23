@@ -23,32 +23,26 @@ export const command = new SlashCommand(
 	},
 	async (interaction, client) => {
 		try {
-			const approvedSuggestionsChannel = client.channels.cache.get(
-				config.logs.approvedSuggestions
+			const suggestionsChannel = client.channels.cache.get(
+				config.logs.suggestions
 			)!;
 
-			const declinedSuggestionsChannel = client.channels.cache.get(
-				config.logs.declinedSuggestions
-			)!;
+			if (!suggestionsChannel.isText()) return;
 
-			if (
-				!approvedSuggestionsChannel.isText() ||
-				!declinedSuggestionsChannel.isText()
-			)
-				return;
+			const suggestionsMessages = await suggestionsChannel.messages.fetch({
+				limit: 100,
+			});
 
-			const approvedMessages = await approvedSuggestionsChannel.messages.fetch({
-				limit: 25,
-			});
-			const declinedMessages = await declinedSuggestionsChannel.messages.fetch({
-				limit: 25,
-			});
-			if (!approvedMessages.size) return;
+			if (!suggestionsMessages.size) return;
 			const toRespond: ApplicationCommandOptionChoice[] = [];
 			switch (interaction.options.data[0].name) {
 				case "accept":
-					approvedMessages
-						.filter((m) => m.author.bot && m.embeds[0].title!.split("#")[1].length > 0)
+					suggestionsMessages
+						.filter(
+							(m) =>
+								m.embeds.length > 0 &&
+								m.embeds[0].title!.split("#")[1].length > 0
+						)
 						.map((m) => m.embeds[0].title!.split("#")[1])
 						.forEach((s) => {
 							toRespond.push({
@@ -60,8 +54,12 @@ export const command = new SlashCommand(
 					if (!interaction.responded) await interaction.respond(toRespond);
 					break;
 				case "decline":
-					declinedMessages
-						.filter((m) => m.author.bot && m.embeds[0].title!.split("#")[1].length > 0)
+					suggestionsMessages
+						.filter(
+							(m) =>
+								m.embeds.length > 0 &&
+								m.embeds[0].title!.split("#")[1].length > 0
+						)
 						.map((m) => m.embeds[0].title!.split("#")[1])
 						.forEach((s) => {
 							toRespond.push({
@@ -97,6 +95,13 @@ export const command = new SlashCommand(
 						autocomplete: true,
 						required: true,
 					},
+					{
+						description: "The reason of the acceptance",
+						name: "reason",
+						type: ApplicationCommandOptionType.String,
+						autocomplete: false,
+						required: false,
+					},
 				],
 			},
 			{
@@ -110,6 +115,13 @@ export const command = new SlashCommand(
 						type: ApplicationCommandOptionType.String,
 						autocomplete: true,
 						required: true,
+					},
+					{
+						description: "The reason of the denial",
+						name: "reason",
+						type: ApplicationCommandOptionType.String,
+						autocomplete: false,
+						required: false,
 					},
 				],
 			},

@@ -14,9 +14,14 @@ app.use((_, res) => {
 app.listen(3000);
 
 const client = new Client({
-	intents: [Discord.Intents.FLAGS.GUILDS, Discord.Intents.FLAGS.GUILD_MESSAGES],
+	intents: [
+		Discord.Intents.FLAGS.GUILDS,
+		Discord.Intents.FLAGS.GUILD_MESSAGES,
+		Discord.Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
+	],
 	prefix: config.prefix,
 	token: config.token!,
+	partials: ["MESSAGE", "REACTION"],
 });
 
 client.addEvents(join(__dirname, "events", "normalEvents"));

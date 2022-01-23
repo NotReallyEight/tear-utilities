@@ -9,68 +9,160 @@ import type { ApplicationCommandOptionChoice } from "discord.js";
 
 export const command = new SlashCommand(
 	"suggestion",
-	(interaction) => {
+	async (interaction, client) => {
 		try {
+			if (!interaction.isApplicationCommand() || !interaction.inCachedGuild())
+				return;
+
+			const suggestionsChannel = client.channels.cache.get(
+				config.logs.suggestions
+			)!;
+
+			if (!suggestionsChannel.isText()) return;
+
+			await interaction.deferReply();
+
+			const suggestionMessages = await suggestionsChannel.messages.fetch({
+				limit: 100,
+			});
+
+			// if interaction.options.data[0].name === accept then do something otherwise if it's decline do something else
+
+			// interaction.options.data[0].options[0].value is the id of the suggestion
+
+			const suggestionMessage = suggestionMessages
+				.filter(
+					(m) =>
+						m.embeds.length > 0 &&
+						m.embeds[0].title!.split("#")[1].length > 0 &&
+						m.embeds[0].title!.split("#")[1] ===
+							interaction.options.data[0]!.options![0].value
+				)
+				.first();
+
+			if (!suggestionMessage) {
+				await interaction.editReply("No suggestion found.");
+				return;
+			}
+
+			await suggestionMessage.delete();
+
+			const acceptedSuggestionsChannel = client.channels.cache.get(
+				config.logs.approvedSuggestions
+			)!;
+			const declinedSuggestionsChannel = client.channels.cache.get(
+				config.logs.declinedSuggestions
+			)!;
+
 			if (
-				!interaction.isApplicationCommand() ||
-				!interaction.inCachedGuild() ||
-				!interaction.isAutocomplete()
+				!acceptedSuggestionsChannel.isText() ||
+				!declinedSuggestionsChannel.isText()
 			)
 				return;
+
+			let content: string | null = "";
+
+			if (
+				!interaction.options.data[0].options ||
+				// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+				interaction.options.data[0].options[1] == null ||
+				interaction.options.data[0].options[1].value == null
+			)
+				content = null;
+			else
+				content = `**Reason**: ${interaction.options.data[0].options[1].value.toString()}`;
+			switch (interaction.options.data[0].name) {
+				case "accept":
+					suggestionMessage.embeds[0].title = `Suggestion Accepted #${
+						suggestionMessage.embeds[0].title!.split("#")[1]
+					}`;
+					await acceptedSuggestionsChannel.send({
+						content,
+						embeds: suggestionMessage.embeds,
+					});
+					await interaction.editReply("Suggestion accepted.");
+					break;
+
+				case "decline":
+					suggestionMessage.embeds[0].title = `Suggestion Declined #${
+						suggestionMessage.embeds[0].title!.split("#")[1]
+					}`;
+					await declinedSuggestionsChannel.send({
+						content,
+						embeds: suggestionMessage.embeds,
+					});
+					await interaction.editReply("Suggestion declined.");
+					break;
+
+				default:
+					break;
+			}
 		} catch (err: any) {
 			Logger.error(`${(err as Error).name}: ${(err as Error).message}`);
 		}
 	},
 	async (interaction, client) => {
 		try {
-			const approvedSuggestionsChannel = client.channels.cache.get(
-				config.logs.approvedSuggestions
+			if (!interaction.isAutocomplete()) return;
+
+			const suggestionsChannel = client.channels.cache.get(
+				config.logs.suggestions
 			)!;
 
-			const declinedSuggestionsChannel = client.channels.cache.get(
-				config.logs.declinedSuggestions
-			)!;
+			if (!suggestionsChannel.isText()) return;
 
-			if (
-				!approvedSuggestionsChannel.isText() ||
-				!declinedSuggestionsChannel.isText()
-			)
-				return;
+			const suggestionsMessages = await suggestionsChannel.messages.fetch({
+				limit: 100,
+			});
 
-			const approvedMessages = await approvedSuggestionsChannel.messages.fetch({
-				limit: 25,
-			});
-			const declinedMessages = await declinedSuggestionsChannel.messages.fetch({
-				limit: 25,
-			});
-			if (!approvedMessages.size) return;
+			if (!suggestionsMessages.size) return;
 			const toRespond: ApplicationCommandOptionChoice[] = [];
 			switch (interaction.options.data[0].name) {
 				case "accept":
-					approvedMessages
-						.filter((m) => m.author.bot && m.embeds[0].title!.split("#")[1].length > 0)
-						.map((m) => m.embeds[0].title!.split("#")[1])
-						.forEach((s) => {
-							toRespond.push({
-								name: s,
-								value: s,
-							});
-						});
-
-					if (!interaction.responded) await interaction.respond(toRespond);
-					break;
 				case "decline":
-					declinedMessages
-						.filter((m) => m.author.bot && m.embeds[0].title!.split("#")[1].length > 0)
-						.map((m) => m.embeds[0].title!.split("#")[1])
-						.forEach((s) => {
-							toRespond.push({
-								name: s,
-								value: s,
+					if (
+						!interaction.options.data[0].options ||
+						interaction.options.data[0].options[0].value?.toString().length ==
+							null
+					)
+						suggestionsMessages
+							.filter(
+								(m) =>
+									m.embeds.length > 0 &&
+									m.embeds[0].title!.split("#")[1].length > 0
+							)
+							.map((m) => m.embeds[0].title!.split("#")[1])
+							.forEach((s) => {
+								toRespond.push({
+									name: s,
+									value: s,
+								});
 							});
-						});
+					else
+						suggestionsMessages
+							.filter(
+								(m) =>
+									m.embeds.length > 0 &&
+									m.embeds[0].title!.split("#")[1].length > 0 &&
+									m.embeds[0]
+										.title!.split("#")[1]
+										.startsWith(
+											interaction.options.data[0].options![0].value!.toString()
+										)
+							)
+							.map((m) => m.embeds[0].title!.split("#")[1])
+							.forEach((s) => {
+								toRespond.push({
+									name: s,
+									value: s,
+								});
+							});
 
-					if (!interaction.responded) await interaction.respond(toRespond);
+					if (interaction.responded) break;
+
+					if (toRespond.length > 25) toRespond.length = 25;
+
+					await interaction.respond(toRespond);
 					break;
 				default:
 					break;
@@ -79,7 +171,11 @@ export const command = new SlashCommand(
 			Logger.error(`${(err as Error).name}: ${(err as Error).message}`);
 		}
 	},
-	undefined,
+	{
+		custom: (interaction) =>
+			interaction.inCachedGuild() &&
+			interaction.member.roles.cache.has(config.roles.staffRole),
+	},
 	{
 		description: "Accept or decline a suggestion.",
 		type: ApplicationCommandType.ChatInput,
@@ -97,6 +193,13 @@ export const command = new SlashCommand(
 						autocomplete: true,
 						required: true,
 					},
+					{
+						description: "The reason of the acceptance",
+						name: "reason",
+						type: ApplicationCommandOptionType.String,
+						autocomplete: false,
+						required: false,
+					},
 				],
 			},
 			{
@@ -110,6 +213,13 @@ export const command = new SlashCommand(
 						type: ApplicationCommandOptionType.String,
 						autocomplete: true,
 						required: true,
+					},
+					{
+						description: "The reason of the denial",
+						name: "reason",
+						type: ApplicationCommandOptionType.String,
+						autocomplete: false,
+						required: false,
 					},
 				],
 			},

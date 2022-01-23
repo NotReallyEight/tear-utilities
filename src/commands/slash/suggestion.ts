@@ -172,15 +172,9 @@ export const command = new SlashCommand(
 		}
 	},
 	{
-		custom: (interaction) => {
-			if (!interaction.isApplicationCommand() || !interaction.inCachedGuild())
-				return false;
-
-			if (interaction.member.roles.cache.has(config.roles.staffRole))
-				return true;
-
-			return false;
-		},
+		custom: (interaction) =>
+			interaction.inCachedGuild() &&
+			interaction.member.roles.cache.has(config.roles.staffRole),
 	},
 	{
 		description: "Accept or decline a suggestion.",

@@ -37,38 +37,50 @@ export const command = new SlashCommand(
 			const toRespond: ApplicationCommandOptionChoice[] = [];
 			switch (interaction.options.data[0].name) {
 				case "accept":
-					suggestionsMessages
-						.filter(
-							(m) =>
-								m.embeds.length > 0 &&
-								m.embeds[0].title!.split("#")[1].length > 0
-						)
-						.map((m) => m.embeds[0].title!.split("#")[1])
-						.forEach((s) => {
-							toRespond.push({
-								name: s,
-								value: s,
-							});
-						});
-
-					if (!interaction.responded) await interaction.respond(toRespond);
-					break;
 				case "decline":
-					suggestionsMessages
-						.filter(
-							(m) =>
-								m.embeds.length > 0 &&
-								m.embeds[0].title!.split("#")[1].length > 0
-						)
-						.map((m) => m.embeds[0].title!.split("#")[1])
-						.forEach((s) => {
-							toRespond.push({
-								name: s,
-								value: s,
+					if (
+						!interaction.options.data[0].options ||
+						interaction.options.data[0].options[0].value?.toString().length ==
+							null
+					)
+						suggestionsMessages
+							.filter(
+								(m) =>
+									m.embeds.length > 0 &&
+									m.embeds[0].title!.split("#")[1].length > 0
+							)
+							.map((m) => m.embeds[0].title!.split("#")[1])
+							.forEach((s) => {
+								toRespond.push({
+									name: s,
+									value: s,
+								});
 							});
-						});
+					else
+						suggestionsMessages
+							.filter(
+								(m) =>
+									m.embeds.length > 0 &&
+									m.embeds[0].title!.split("#")[1].length > 0 &&
+									m.embeds[0]
+										.title!.split("#")[1]
+										.startsWith(
+											interaction.options.data[0].options![0].value!.toString()
+										)
+							)
+							.map((m) => m.embeds[0].title!.split("#")[1])
+							.forEach((s) => {
+								toRespond.push({
+									name: s,
+									value: s,
+								});
+							});
 
-					if (!interaction.responded) await interaction.respond(toRespond);
+					if (interaction.responded) break;
+
+					if (toRespond.length > 25) toRespond.length = 25;
+
+					await interaction.respond(toRespond);
 					break;
 				default:
 					break;

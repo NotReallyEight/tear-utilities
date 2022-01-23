@@ -28,9 +28,9 @@
 <@&918862178054991872> - Level 30.
 <@&918862111986290718> - Level 25.
 <@&918862041962410084> - Level 20, adds permissions to create Public and Private threads and to add reactions.
-<@&918861945245958184> - Level 15, adds `Change nickname` permission.
+<@&918861945245958184> - Level 15.
 <@&918861856439947304> - Level 10, adds additional `Voice Chat` permissions, such as `Start activities`.
-<@&918861283258941481> - Level 5, adds `Embed links` and `Attach files` permissions.
+<@&918861283258941481> - Level 5, adds `Embed links`, `Attach files`, `Change nickname` permissions.
 
 *Other Roles*
 

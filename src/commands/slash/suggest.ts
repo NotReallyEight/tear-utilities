@@ -68,9 +68,7 @@ export const command = new SlashCommand(
 		}
 	},
 	undefined,
-	{
-		custom: (interaction) => interaction.user.id === "489031280147693568",
-	},
+	undefined,
 	{
 		description: "Suggest a feature you would like to see in the server.",
 		type: ApplicationCommandType.ChatInput,

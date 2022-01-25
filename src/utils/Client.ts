@@ -5,7 +5,10 @@ import type { Command } from "./Command";
 import type { Event } from "./Event";
 import type { SlashCommand } from "./SlashCommand";
 import { REST } from "@discordjs/rest";
-import type { RESTPostAPIApplicationGuildCommandsJSONBody } from "discord-api-types/v9";
+import type {
+	RESTGetAPIApplicationGuildCommandsResult,
+	RESTPostAPIApplicationGuildCommandsJSONBody,
+} from "discord-api-types/v9";
 import { Routes } from "discord-api-types/v9";
 import { config } from "../config";
 import { Logger } from "./Logger";
@@ -71,31 +74,67 @@ export class Client extends Discord.Client {
 
 	public async addSlashCommands(path: string): Promise<this> {
 		try {
+			// eslint-disable-next-line no-await-in-loop
+			while (!this.user) await this.wait(500);
 			const commandFiles = readdirSync(path);
 			const commands: RESTPostAPIApplicationGuildCommandsJSONBody[] = [];
+			const commandsIds: { id: string; name: string }[] = [];
 
 			for (const file of commandFiles.filter((f) => f.endsWith(".js"))) {
 				const { command } = require(join(path, file)) as SlashCommandImport;
 
 				this.slashCommands.push(command);
 
-				// eslint-disable-next-line no-await-in-loop
-				do await this.wait(500);
-				while (!this.user);
-
 				commands.push({
+					default_permission: command.options?.defaultPermission,
 					type: command.type,
 					name: command.name,
 					description: command.description,
 					options: command.options?.options ?? undefined,
 				});
 			}
-			await this.restClient?.put(
-				Routes.applicationGuildCommands(this.user!.id, config.guildId),
+
+			await this.restClient!.put(
+				Routes.applicationGuildCommands(this.user.id, config.guildId),
 				{
 					body: commands,
 				}
 			);
+
+			const commandsGot = (await this.restClient!.get(
+				Routes.applicationGuildCommands(this.user.id, config.guildId)
+			)) as RESTGetAPIApplicationGuildCommandsResult;
+
+			commandsGot.forEach((cmd) => {
+				commandsIds.push({
+					id: cmd.id,
+					name: cmd.name,
+				});
+			});
+
+			commandsIds.forEach(async (c) => {
+				if (
+					this.slashCommands.find((cmd) => cmd.name === c.name)?.requirements
+						.permissions == null
+				)
+					return;
+				await this.restClient!.put(
+					Routes.applicationCommandPermissions(
+						this.user!.id,
+						config.guildId,
+						c.id
+					),
+					{
+						body: {
+							permissions: this.slashCommands.find((cmd) => cmd.name === c.name)
+								?.requirements.permissions,
+						},
+						headers: {
+							"Content-Type": "application/json",
+						},
+					}
+				);
+			});
 		} catch (error: any) {
 			Logger.error((error as Error).message);
 		}

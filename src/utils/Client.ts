@@ -107,8 +107,32 @@ export class Client extends Discord.Client {
 
 			commandsIds.push(...commandsGot);
 
+			for (const c of commandsIds) {
+				const permissions = this.slashCommands.find(
+					(cmd) => cmd.name === c.name
+				)?.requirements.permissions;
+
+				if (permissions == null) break;
+				// eslint-disable-next-line no-await-in-loop
+				await this.restClient!.put(
+					Routes.applicationCommandPermissions(
+						this.user.id,
+						config.guildId,
+						c.id
+					),
+					{
+						body: { permissions },
+						headers: {
+							"Content-Type": "application/json",
+						},
+					}
+				);
+			}
+
 			commandsIds.forEach(async (c) => {
-				const permissions = this.slashCommands.find((cmd) => cmd.name === c.name)?.requirements.permissions;
+				const permissions = this.slashCommands.find(
+					(cmd) => cmd.name === c.name
+				)?.requirements.permissions;
 
 				if (permissions == null) return;
 				await this.restClient!.put(

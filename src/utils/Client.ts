@@ -105,12 +105,7 @@ export class Client extends Discord.Client {
 				Routes.applicationGuildCommands(this.user.id, config.guildId)
 			)) as RESTGetAPIApplicationGuildCommandsResult;
 
-			commandsGot.forEach((cmd) => {
-				commandsIds.push({
-					id: cmd.id,
-					name: cmd.name,
-				});
-			});
+			commandsIds.push(...commandsGot);
 
 			commandsIds.forEach(async (c) => {
 				if (

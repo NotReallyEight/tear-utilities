@@ -108,11 +108,9 @@ export class Client extends Discord.Client {
 			commandsIds.push(...commandsGot);
 
 			commandsIds.forEach(async (c) => {
-				if (
-					this.slashCommands.find((cmd) => cmd.name === c.name)?.requirements
-						.permissions == null
-				)
-					return;
+				const permissions = this.slashCommands.find((cmd) => cmd.name === c.name)?.requirements.permissions;
+
+				if (permissions == null) return;
 				await this.restClient!.put(
 					Routes.applicationCommandPermissions(
 						this.user!.id,
@@ -120,10 +118,7 @@ export class Client extends Discord.Client {
 						c.id
 					),
 					{
-						body: {
-							permissions: this.slashCommands.find((cmd) => cmd.name === c.name)
-								?.requirements.permissions,
-						},
+						body: { permissions },
 						headers: {
 							"Content-Type": "application/json",
 						},

@@ -27,10 +27,6 @@ export const command = new SlashCommand(
 				limit: 100,
 			});
 
-			// if interaction.options.data[0].name === accept then do something otherwise if it's decline do something else
-
-			// interaction.options.data[0].options[0].value is the id of the suggestion
-
 			const suggestionMessage = suggestionMessages
 				.filter(
 					(m) =>
@@ -71,7 +67,11 @@ export const command = new SlashCommand(
 			)
 				content = null;
 			else
-				content = `**Reason**: ${interaction.options.data[0].options[1].value.toString()}`;
+				content = `**Reason**: ${interaction.options.data[0].options[1].value.toString()}\n**${
+					interaction.options.data[0].name === "accept"
+						? "Accepted"
+						: "Declined"
+				} by**: <@${interaction.member.id}>`;
 			switch (interaction.options.data[0].name) {
 				case "accept":
 					suggestionMessage.embeds[0].title = `Suggestion Accepted #${

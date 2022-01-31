@@ -42,12 +42,9 @@ export const command = new SlashCommand(
 
 			const embed: APIEmbed = {
 				title: `New Suggestion! #${lastSuggestionId}`,
-				description: `${interaction.options.getString(
-					"suggestion",
-					true
-				)}\n\n_Suggested by ${interaction.user.tag}_`,
+				description: `${interaction.options.getString("suggestion", true)}`,
 				footer: {
-					text: `Upvotes : 0 | Downvotes : 0`,
+					text: `Suggested by ${interaction.user.tag}`,
 					icon_url: interaction.member.displayAvatarURL(),
 				},
 				color: config.commandsEmbedsColor,

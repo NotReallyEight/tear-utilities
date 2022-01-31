@@ -16,7 +16,7 @@ export const event = new ComponentEvent(
 			const addedRoles: string[] = [];
 
 			if (interaction.values.length)
-				for (v of interaction.values) {
+				for (const v of interaction.values) {
 					newRoles.push(v.split("-")[2]);
 					addedRoles.push(`<@&${v.split("-")[2]}>`);
 				}

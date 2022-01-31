@@ -101,14 +101,14 @@ export class Client extends Discord.Client {
 			}
 
 			await this.restClient!.put(
-				Routes.applicationGuildCommands(this.user.id, config.guildId),
+				Routes.applicationGuildCommands(this.user!.id, config.guildId),
 				{
 					body: commands,
 				}
 			);
 
 			const commandsGot = (await this.restClient!.get(
-				Routes.applicationGuildCommands(this.user.id, config.guildId)
+				Routes.applicationGuildCommands(this.user!.id, config.guildId)
 			)) as RESTGetAPIApplicationGuildCommandsResult;
 
 			commandsIds.push(...commandsGot);
@@ -122,7 +122,7 @@ export class Client extends Discord.Client {
 				// eslint-disable-next-line no-await-in-loop
 				await this.restClient!.put(
 					Routes.applicationCommandPermissions(
-						this.user.id,
+						this.user!.id,
 						config.guildId,
 						c.id
 					),

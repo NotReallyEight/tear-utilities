@@ -3,6 +3,7 @@ import { Logger } from "../../utils/Logger";
 import {
 	ApplicationCommandType,
 	ApplicationCommandOptionType,
+	ApplicationCommandPermissionType,
 } from "discord-api-types/v9";
 import { config } from "../../config";
 import type { ApplicationCommandOptionChoice } from "discord.js";
@@ -175,11 +176,18 @@ export const command = new SlashCommand(
 		custom: (interaction) =>
 			interaction.inCachedGuild() &&
 			interaction.member.roles.cache.has(config.roles.staffRole),
+		permissions: [
+			{
+				id: config.roles.staffRole,
+				type: ApplicationCommandPermissionType.Role,
+				permission: true,
+			},
+		],
 	},
 	{
 		description: "Accept or decline a suggestion.",
 		type: ApplicationCommandType.ChatInput,
-		defaultPermission: true,
+		defaultPermission: false,
 		options: [
 			{
 				description: "Accept a suggestion",

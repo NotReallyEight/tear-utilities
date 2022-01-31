@@ -1,4 +1,7 @@
-import type { APIApplicationCommandOption } from "discord-api-types/v9";
+import type {
+	APIApplicationCommandOption,
+	APIApplicationCommandPermission,
+} from "discord-api-types/v9";
 import { ApplicationCommandType } from "discord-api-types/v9";
 import type Discord from "discord.js";
 import type {
@@ -12,6 +15,7 @@ export interface SlashCommandRequirements {
 		interaction: Discord.BaseCommandInteraction,
 		client: Client
 	) => Promise<boolean> | boolean;
+	permissions?: APIApplicationCommandPermission[];
 }
 
 export interface CommandFn {
@@ -54,8 +58,11 @@ export class SlashCommand {
 		this.fn = fn;
 		this.autocomplete = autocomplete;
 		this.requirements = {};
-		if (requirements)
+		if (requirements) {
 			if (requirements.custom) this.requirements.custom = requirements.custom;
+			if (requirements.permissions)
+				this.requirements.permissions = requirements.permissions;
+		}
 
 		if (options) {
 			this.options = options;

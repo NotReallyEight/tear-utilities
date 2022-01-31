@@ -5,7 +5,10 @@ import type { Command } from "./Command";
 import type { Event } from "./Event";
 import type { SlashCommand } from "./SlashCommand";
 import { REST } from "@discordjs/rest";
-import type { RESTPostAPIApplicationGuildCommandsJSONBody } from "discord-api-types/v9";
+import type {
+	RESTGetAPIApplicationGuildCommandsResult,
+	RESTPostAPIApplicationGuildCommandsJSONBody,
+} from "discord-api-types/v9";
 import { Routes } from "discord-api-types/v9";
 import { config } from "../config";
 import { Logger } from "./Logger";
@@ -36,14 +39,21 @@ export class Client extends Discord.Client {
 	commands: Command[] = [];
 	componentEvents: ComponentEvent[] = [];
 	prefix: string;
+	readyPromise: Promise<void>;
 	restClient?: REST;
 	slashCommands: SlashCommand[] = [];
+	private resolvePromise!: (arg: any) => void;
 	constructor(options: ClientOptions) {
 		super(options);
 		this.prefix = options.prefix;
 		this.restClient = new REST({
 			version: "9",
 		}).setToken(config.token!);
+		this.readyPromise = new Promise((resolve) => {
+			this.resolvePromise = resolve;
+		});
+
+		this.once("ready", this.resolvePromise);
 	}
 
 	public addCommands(path: string): this {
@@ -71,31 +81,80 @@ export class Client extends Discord.Client {
 
 	public async addSlashCommands(path: string): Promise<this> {
 		try {
+			await this.readyPromise;
 			const commandFiles = readdirSync(path);
 			const commands: RESTPostAPIApplicationGuildCommandsJSONBody[] = [];
+			const commandsIds: { id: string; name: string }[] = [];
 
 			for (const file of commandFiles.filter((f) => f.endsWith(".js"))) {
 				const { command } = require(join(path, file)) as SlashCommandImport;
 
 				this.slashCommands.push(command);
 
-				// eslint-disable-next-line no-await-in-loop
-				do await this.wait(500);
-				while (!this.user);
-
 				commands.push({
+					default_permission: command.options?.defaultPermission,
 					type: command.type,
 					name: command.name,
 					description: command.description,
 					options: command.options?.options ?? undefined,
 				});
 			}
-			await this.restClient?.put(
+
+			await this.restClient!.put(
 				Routes.applicationGuildCommands(this.user!.id, config.guildId),
 				{
 					body: commands,
 				}
 			);
+
+			const commandsGot = (await this.restClient!.get(
+				Routes.applicationGuildCommands(this.user!.id, config.guildId)
+			)) as RESTGetAPIApplicationGuildCommandsResult;
+
+			commandsIds.push(...commandsGot);
+
+			for (const c of commandsIds) {
+				const permissions = this.slashCommands.find(
+					(cmd) => cmd.name === c.name
+				)?.requirements.permissions;
+
+				if (permissions == null) break;
+				// eslint-disable-next-line no-await-in-loop
+				await this.restClient!.put(
+					Routes.applicationCommandPermissions(
+						this.user!.id,
+						config.guildId,
+						c.id
+					),
+					{
+						body: { permissions },
+						headers: {
+							"Content-Type": "application/json",
+						},
+					}
+				);
+			}
+
+			commandsIds.forEach(async (c) => {
+				const permissions = this.slashCommands.find(
+					(cmd) => cmd.name === c.name
+				)?.requirements.permissions;
+
+				if (permissions == null) return;
+				await this.restClient!.put(
+					Routes.applicationCommandPermissions(
+						this.user!.id,
+						config.guildId,
+						c.id
+					),
+					{
+						body: { permissions },
+						headers: {
+							"Content-Type": "application/json",
+						},
+					}
+				);
+			});
 		} catch (error: any) {
 			Logger.error((error as Error).message);
 		}

@@ -8,8 +8,6 @@ export const event = new ComponentEvent(
 	"color-roles-select",
 	async (interaction) => {
 		try {
-			await interaction.deferUpdate();
-
 			if (!interaction.isSelectMenu() || !interaction.inCachedGuild()) return;
 
 			const newRoles = interaction.member.roles.cache
@@ -18,6 +16,13 @@ export const event = new ComponentEvent(
 
 			if (interaction.values.length)
 				newRoles.push(interaction.values[0].split("-")[2]);
+
+			await interaction.reply({
+				ephemeral: true,
+				content: interaction.values.length
+					? `Added <@&${interaction.values[0].split("-")[2]}> to your roles.`
+					: "Removed all color roles.",
+			});
 
 			await interaction.member.roles.set(newRoles);
 		} catch (err: any) {

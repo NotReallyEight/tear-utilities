@@ -16,10 +16,10 @@ export const event = new ComponentEvent(
 			const addedRoles: string[] = [];
 
 			if (interaction.values.length)
-				interaction.values.forEach((v) => {
+				for (v of interaction.values) {
 					newRoles.push(v.split("-")[2]);
 					addedRoles.push(`<@&${v.split("-")[2]}>`);
-				});
+				}
 
 			await interaction.reply({
 				ephemeral: true,

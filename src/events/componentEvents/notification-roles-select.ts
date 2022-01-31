@@ -8,16 +8,25 @@ export const event = new ComponentEvent(
 	"notification-roles-select",
 	async (interaction) => {
 		try {
-			await interaction.deferUpdate();
-
 			if (!interaction.isSelectMenu() || !interaction.inCachedGuild()) return;
 
 			const newRoles = interaction.member.roles.cache
 				.map((r) => r.id)
 				.filter((r) => !roleIds.includes(r));
+			const addedRoles: string[] = [];
 
 			if (interaction.values.length)
-				interaction.values.forEach((v) => newRoles.push(v.split("-")[2]));
+				interaction.values.forEach((v) => {
+					newRoles.push(v.split("-")[2]);
+					addedRoles.push(`<@&${v.split("-")[2]}>`);
+				});
+
+			await interaction.reply({
+				ephemeral: true,
+				content: addedRoles.length
+					? `Added ${addedRoles.join(", ")} to your roles.`
+					: "Removed all notification roles.",
+			});
 
 			await interaction.member.roles.set(newRoles);
 		} catch (err: any) {

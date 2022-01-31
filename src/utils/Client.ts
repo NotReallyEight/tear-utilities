@@ -39,14 +39,21 @@ export class Client extends Discord.Client {
 	commands: Command[] = [];
 	componentEvents: ComponentEvent[] = [];
 	prefix: string;
+	readyPromise: Promise<void>;
 	restClient?: REST;
 	slashCommands: SlashCommand[] = [];
+	private resolvePromise!: (arg: any) => void;
 	constructor(options: ClientOptions) {
 		super(options);
 		this.prefix = options.prefix;
 		this.restClient = new REST({
 			version: "9",
 		}).setToken(config.token!);
+		this.readyPromise = new Promise((resolve) => {
+			this.resolvePromise = resolve;
+		});
+
+		this.once("ready", this.resolvePromise);
 	}
 
 	public addCommands(path: string): this {
@@ -75,7 +82,7 @@ export class Client extends Discord.Client {
 	public async addSlashCommands(path: string): Promise<this> {
 		try {
 			// eslint-disable-next-line no-await-in-loop
-			while (!this.user) await this.wait(500);
+			while (!this.user) await this.readyPromise;
 			const commandFiles = readdirSync(path);
 			const commands: RESTPostAPIApplicationGuildCommandsJSONBody[] = [];
 			const commandsIds: { id: string; name: string }[] = [];

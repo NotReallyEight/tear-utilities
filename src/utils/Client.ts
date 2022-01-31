@@ -81,8 +81,7 @@ export class Client extends Discord.Client {
 
 	public async addSlashCommands(path: string): Promise<this> {
 		try {
-			// eslint-disable-next-line no-await-in-loop
-			while (!this.user) await this.readyPromise;
+			await this.readyPromise;
 			const commandFiles = readdirSync(path);
 			const commands: RESTPostAPIApplicationGuildCommandsJSONBody[] = [];
 			const commandsIds: { id: string; name: string }[] = [];

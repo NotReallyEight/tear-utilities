@@ -1,4 +1,4 @@
-import type { APIEmbed } from "discord-api-types";
+import type { APIEmbed } from "discord-api-types/v9";
 import { MessageActionRow } from "discord.js";
 import { config } from "../../config";
 import { Command } from "../../utils/Command";

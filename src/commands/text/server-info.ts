@@ -3,7 +3,7 @@ import { createReadStream } from "node:fs";
 import { join } from "node:path";
 import { Logger } from "../../utils/Logger";
 import { config } from "../../config";
-import type { APIEmbed } from "discord-api-types";
+import type { APIEmbed } from "discord-api-types/v9";
 
 export const command = new Command(
 	"server-info",

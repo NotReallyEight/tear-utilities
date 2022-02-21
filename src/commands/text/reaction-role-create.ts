@@ -8,7 +8,7 @@ export const command = new Command(
 	["reaction-role-create", "rrc"],
 	async (message) => {
 		try {
-			const embed: APIEmbed = {
+			const embed: Omit<APIEmbed, "type"> = {
 				title: "Get some roles!",
 				description: "Click one of the buttons below to get some cool roles!",
 				color: config.commandsEmbedsColor,

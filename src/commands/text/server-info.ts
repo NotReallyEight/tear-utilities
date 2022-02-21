@@ -19,7 +19,7 @@ export const command = new Command(
 			});
 
 			readerStream.on("end", () => {
-				const embeds: APIEmbed[] = [];
+				const embeds: Omit<APIEmbed, "type">[] = [];
 				serverInfo.split("---").forEach((info, index) => {
 					if (!index)
 						embeds.push({

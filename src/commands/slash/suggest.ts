@@ -40,7 +40,7 @@ export const command = new SlashCommand(
 				config.logs.suggestions
 			) as GuildTextBasedChannel;
 
-			const embed: APIEmbed = {
+			const embed: Omit<APIEmbed, "type"> = {
 				title: `New Suggestion! #${lastSuggestionId}`,
 				description: `${interaction.options.getString("suggestion", true)}`,
 				footer: {

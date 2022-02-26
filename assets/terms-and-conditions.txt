@@ -37,3 +37,7 @@ __**TERMS AND CONDITIONS**__
 > The website and The Server could contain errors and / or bugs, we do not guarantee the accuracy of the information on both of them. Do not use the information on the site to abuse, or do anything that is not legal.
 
 _Terms and Conditions are subjected to change without prior notice, and it is up to the user to stay up to date with them._
+
+**YOUR DATA**
+
+> The Service may uphold temporary user data on our bots, and after a restart this data is wiped immediately. The Service also upholds some basic information such as User IDs, usernames in a database, to ensure the correct functioning of The Service. We also do not store personal identifiable information such as e-mails, IP addresses, etc. The user can request a data deletion at any time.

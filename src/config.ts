@@ -38,4 +38,8 @@ export const config = {
 		approvedSuggestions: "931590305046724628",
 		declinedSuggestions: "931590325644972052",
 	},
+	autoRoles: {
+		member: "918850815773528074",
+	},
 };
+

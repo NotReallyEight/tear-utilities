@@ -1,23 +1,23 @@
 __**TERMS AND CONDITIONS**__
 
-> By accessing and joining Tear Paradise (also referred as "The Server"), the user must agree and comply to the following Terms and Conditions (and any subsequent amendments to them).
+> By accessing and joining Tear Paradise (also referred to as "The Server"), the user must agree and comply with the following Terms and Conditions (and any subsequent amendments to them).
 
 **PRODUCTS**
 
-> ATN Development (also referred as "We", "The Service"), provides Discord related products such as public bots, but also open source projects that the user can find in our [GitHub Organization](<https://github.com/ATN-Development>)(also referred as "The Organization").
+> ATN Development (also referred to as "We", "The Service"), provides Discord-related products such as public bots, but also open-source projects that the user can find in our [GitHub Organization](<https://github.com/ATN-Development>)(also referred to as "The Organization").
 
 **PAYMENTS**
 
-> All the payments are made through [Ko-Fi](<https://ko-fi.com/atndevelopment/tiers>). This means that all the payments are made directly through third party payment providers (e.g. PayPal, Stripe Inc., etc.). For more information about the payments information, please refer to [Ko-Fi's Terms and Conditions](<https://more.ko-fi.com/terms>) in the `Payments` section. As we provide a monthly subscription, in the event of late payment, non-payment or incorrect payment, we reserve the right to cancel all the perks of the user earned through the subscription.
+> All the payments are made through [Ko-Fi](<https://ko-fi.com/atndevelopment/tiers>). This means that all the payments are made directly through third-party payment providers (e.g. PayPal, Stripe Inc., etc.). For more information about the payments information, please refer to [Ko-Fi's Terms and Conditions](<https://more.ko-fi.com/terms>) in the `Payments` section. As we provide a monthly subscription, in the event of late payment, non-payment, or incorrect payment, we reserve the right to cancel all the perks of the user earned through the subscription.
 
 **OWNERSHIP**
 
-> Before and after making a payment of any kind we are the owners of the products. Unauthorized download of our bots', websites' or any other kind of source code owned by us will result in an instant punishment or a ban from The Server and The Service.
+> Before and after making a payment of any kind we are the owners of the products. Any unauthorized download of our bots', websites' or any other kind of source code owned by us will result in an instant punishment or a ban from The Server and The Service.
 
 **WARRANTY**
 
-> We do not guarantee full warranty in the following situations:
-> - The product is hosted on your own environment and the host is not of our ownership.
+> We do not guarantee a full warranty in the following situations:
+> - The product is hosted in your environment and the host is not of our own.
 > - The product has been deprecated publicly by us.
 
 **BUGS**
@@ -30,14 +30,14 @@ __**TERMS AND CONDITIONS**__
 
 **LAW**
 
-> The contract abides by Italy's current laws, or the customer's residence State's current law. Not abiding by them will result in an instant ban from The Server and The Service.
+> The contract abides by Italy's current laws or the customer's residence State's current law. Not abiding by them will result in an instant ban from The Server and The Service.
 
 **DISCLAIMER**
 
-> The website and The Server could contain errors and / or bugs, we do not guarantee the accuracy of the information on both of them. Do not use the information on the site to abuse, or do anything that is not legal.
+> The website and The Server could contain errors and/or bugs, we do not guarantee the accuracy of the information on both of them. Do not use the information on the site to abuse, or do anything that is not legal.
 
-_Terms and Conditions are subjected to change without prior notice, and it is up to the user to stay up to date with them._
+_Terms and Conditions are subject to change without prior notice, and it is up to the user to stay up to date with them._
 
 **YOUR DATA**
 
-> The Service may uphold temporary user data on our bots, and after a restart this data is wiped immediately. The Service also upholds some basic information such as User IDs, usernames in a database, to ensure the correct functioning of The Service. We also do not store personal identifiable information such as e-mails, IP addresses, etc. The user can request a data deletion at any time.
+> The Service may uphold temporary user data on our bots, and after a restart, this data is wiped immediately. The Service also upholds some basic information such as User IDs, usernames in a database, to ensure the correct functioning of The Service. We also do not store personally identifiable information such as e-mails, IP addresses, etc. The user can request data deletion at any time.

@@ -5,10 +5,7 @@ import type { Command } from "./Command";
 import type { Event } from "./Event";
 import type { SlashCommand } from "./SlashCommand";
 import { REST } from "@discordjs/rest";
-import type {
-	RESTGetAPIApplicationGuildCommandsResult,
-	RESTPostAPIApplicationGuildCommandsJSONBody,
-} from "discord-api-types/v9";
+import type { RESTPostAPIApplicationGuildCommandsJSONBody } from "discord-api-types/v9";
 import { Routes } from "discord-api-types/v9";
 import { config } from "../config";
 import { Logger } from "./Logger";
@@ -84,7 +81,6 @@ export class Client extends Discord.Client {
 			await this.readyPromise;
 			const commandFiles = readdirSync(path);
 			const commands: RESTPostAPIApplicationGuildCommandsJSONBody[] = [];
-			const commandsIds: { id: string; name: string }[] = [];
 
 			for (const file of commandFiles.filter((f) => f.endsWith(".js"))) {
 				const { command } = require(join(path, file)) as SlashCommandImport;
@@ -106,55 +102,6 @@ export class Client extends Discord.Client {
 					body: commands,
 				}
 			);
-
-			const commandsGot = (await this.restClient!.get(
-				Routes.applicationGuildCommands(this.user!.id, config.guildId)
-			)) as RESTGetAPIApplicationGuildCommandsResult;
-
-			commandsIds.push(...commandsGot);
-
-			for (const c of commandsIds) {
-				const permissions = this.slashCommands.find(
-					(cmd) => cmd.name === c.name
-				)?.requirements.permissions;
-
-				if (permissions == null) break;
-				// eslint-disable-next-line no-await-in-loop
-				await this.restClient!.put(
-					Routes.applicationCommandPermissions(
-						this.user!.id,
-						config.guildId,
-						c.id
-					),
-					{
-						body: { permissions },
-						headers: {
-							"Content-Type": "application/json",
-						},
-					}
-				);
-			}
-
-			commandsIds.forEach(async (c) => {
-				const permissions = this.slashCommands.find(
-					(cmd) => cmd.name === c.name
-				)?.requirements.permissions;
-
-				if (permissions == null) return;
-				await this.restClient!.put(
-					Routes.applicationCommandPermissions(
-						this.user!.id,
-						config.guildId,
-						c.id
-					),
-					{
-						body: { permissions },
-						headers: {
-							"Content-Type": "application/json",
-						},
-					}
-				);
-			});
 		} catch (error: any) {
 			Logger.error((error as Error).message);
 		}

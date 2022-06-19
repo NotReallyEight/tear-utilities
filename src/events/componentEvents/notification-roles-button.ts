@@ -30,7 +30,7 @@ export const event = new ComponentEvent(
 				{
 					customId: "notification-roles-select",
 					disabled: false,
-					maxValues: 4,
+					maxValues: Object.keys(config.roles.notificationRoles).length,
 					minValues: 0,
 					options: [
 						{

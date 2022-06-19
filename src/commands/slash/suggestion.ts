@@ -6,7 +6,7 @@ import {
 	ApplicationCommandPermissionType,
 } from "discord-api-types/v9";
 import { config } from "../../config";
-import type { ApplicationCommandOptionChoice } from "discord.js";
+import type { ApplicationCommandOptionChoiceData } from "discord.js";
 
 export const command = new SlashCommand(
 	"suggestion",
@@ -117,7 +117,7 @@ export const command = new SlashCommand(
 			});
 
 			if (!suggestionsMessages.size) return;
-			const toRespond: ApplicationCommandOptionChoice[] = [];
+			const toRespond: ApplicationCommandOptionChoiceData[] = [];
 			switch (interaction.options.data[0].name) {
 				case "accept":
 				case "decline":
@@ -234,3 +234,4 @@ export const command = new SlashCommand(
 		],
 	}
 );
+

@@ -22,6 +22,7 @@ export const config = {
 		},
 		notificationRoles: {
 			announcement: "931505151922012210",
+			chat: "988138194681884753",
 			event: "931505232859500564",
 			giveaway: "931505287981068298",
 			poll: "931505332788817930",

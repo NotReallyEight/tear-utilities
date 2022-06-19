@@ -65,7 +65,11 @@ export const command = new SlashCommand(
 				interaction.options.data[0].options[1] == null ||
 				interaction.options.data[0].options[1].value == null
 			)
-				content = null;
+				content = `**${
+					interaction.options.data[0].name === "accept"
+						? "Accepted"
+						: "Declined"
+				} by**: <@${interaction.member.id}>`;
 			else
 				content = `**Reason**: ${interaction.options.data[0].options[1].value.toString()}\n**${
 					interaction.options.data[0].name === "accept"

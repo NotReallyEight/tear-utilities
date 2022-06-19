@@ -5,10 +5,7 @@ import type { Command } from "./Command";
 import type { Event } from "./Event";
 import type { SlashCommand } from "./SlashCommand";
 import { REST } from "@discordjs/rest";
-import type {
-	RESTGetAPIApplicationGuildCommandsResult,
-	RESTPostAPIApplicationGuildCommandsJSONBody,
-} from "discord-api-types/v9";
+import type { RESTPostAPIApplicationGuildCommandsJSONBody } from "discord-api-types/v9";
 import { Routes } from "discord-api-types/v9";
 import { config } from "../config";
 import { Logger } from "./Logger";

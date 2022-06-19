@@ -42,6 +42,14 @@ export const event = new ComponentEvent(
 							),
 						},
 						{
+							label: "Chat Revive Ping",
+							emoji: "<:tp_chat:988138908984438834>",
+							value: `notification-roles-${config.roles.notificationRoles.chat}`,
+							default: notificationRoles.includes(
+								config.roles.notificationRoles.chat
+							),
+						},
+						{
 							label: "Event Ping",
 							emoji: "🎉",
 							value: `notification-roles-${config.roles.notificationRoles.event}`,
@@ -80,3 +88,4 @@ export const event = new ComponentEvent(
 		}
 	}
 );
+

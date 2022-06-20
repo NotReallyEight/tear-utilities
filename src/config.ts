@@ -5,7 +5,7 @@ dotenv.config();
 
 export const config = {
 	commandsEmbedsColor: 0x29abe2,
-	token: env.TOKEN,
+	token: env.TOKEN!,
 	prefix: "t!",
 	guildId: "918576105345146951",
 	roles: {
@@ -41,6 +41,9 @@ export const config = {
 	},
 	autoRoles: {
 		member: "918850815773528074",
+	},
+	mongoDB: {
+		connectionString: env.MONGODB_CONNECTION_STRING!,
 	},
 };
 

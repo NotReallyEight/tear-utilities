@@ -11,7 +11,7 @@ const client = new Client({
 		Discord.Intents.FLAGS.GUILD_MEMBERS,
 	],
 	prefix: config.prefix,
-	token: config.token!,
+	token: config.token,
 	partials: ["MESSAGE", "REACTION"],
 });
 
@@ -22,5 +22,7 @@ client.addComponentEvents(join(__dirname, "events", "componentEvents"));
 void client.addSlashCommands(join(__dirname, "commands", "slash"));
 
 void client.addCommands(join(__dirname, "commands", "text"));
+
+void client.connectMongoDatabase();
 
 void client.login(config.token);

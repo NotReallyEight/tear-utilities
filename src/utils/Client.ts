@@ -10,6 +10,7 @@ import { Routes } from "discord-api-types/v9";
 import { config } from "../config";
 import { Logger } from "./Logger";
 import type { ComponentEvent } from "./ComponentEvent";
+import { MongoClient } from "mongodb";
 
 export interface ClientOptions extends Discord.ClientOptions {
 	prefix: string;
@@ -35,6 +36,8 @@ export interface SlashCommandImport {
 export class Client extends Discord.Client {
 	commands: Command[] = [];
 	componentEvents: ComponentEvent[] = [];
+	levelDates: Map<string, Date> = new Map();
+	mongoClient = new MongoClient(config.mongoDB.connectionString);
 	prefix: string;
 	readyPromise: Promise<void>;
 	restClient?: REST;
@@ -45,7 +48,7 @@ export class Client extends Discord.Client {
 		this.prefix = options.prefix;
 		this.restClient = new REST({
 			version: "9",
-		}).setToken(config.token!);
+		}).setToken(config.token);
 		this.readyPromise = new Promise((resolve) => {
 			this.resolvePromise = resolve;
 		});
@@ -125,6 +128,18 @@ export class Client extends Discord.Client {
 				});
 		}
 		return this;
+	}
+
+	public async connectMongoDatabase(): Promise<void> {
+		try {
+			await this.mongoClient.connect();
+
+			Logger.info("Connected to MongoDB.");
+		} catch (error) {
+			Logger.error((error as Error).message);
+		} finally {
+			void this.mongoClient.close();
+		}
 	}
 
 	public getPrefixesForMessage(message: Discord.Message): string[] {

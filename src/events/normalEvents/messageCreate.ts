@@ -1,3 +1,4 @@
+import { config } from "../../config";
 import type { LevelSchema } from "../../schemas";
 import { Event } from "../../utils/Event";
 import { Logger } from "../../utils/Logger";
@@ -36,8 +37,33 @@ export const event = new Event("messageCreate", async (client, message) => {
 				? userDocument.level + 1
 				: userDocument?.level ?? 1;
 
-		if (userDocument && userDocument.level * userDocument.level * 200 < xpToAdd)
+		if (
+			userDocument &&
+			userDocument.level * userDocument.level * 200 < xpToAdd
+		) {
 			xpToAdd -= userDocument.level * userDocument.level * 200;
+			void message.channel.send(
+				`Congratulations <@${message.author.id}>! You have reached level ${
+					userDocument.level + 1
+				}!`
+			);
+
+			if (
+				Object.keys(config.levelRoles).includes(
+					(userDocument.level + 1).toString()
+				)
+			) {
+				const role = await message.guild.roles.fetch(
+					config.levelRoles[
+						`${(userDocument.level + 1) as keyof typeof config.levelRoles}`
+					]
+				);
+
+				if (role == null)
+					Logger.error(`Could not find level role ${userDocument.level + 1}`);
+				else void message.member?.roles.add(role);
+			}
+		}
 
 		await collection.findOneAndUpdate(
 			{

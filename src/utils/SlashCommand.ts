@@ -1,6 +1,7 @@
 import type {
 	APIApplicationCommandOption,
 	APIApplicationCommandPermission,
+	Locale,
 } from "discord-api-types/v9";
 import { ApplicationCommandType } from "discord-api-types/v9";
 import type Discord from "discord.js";
@@ -26,7 +27,9 @@ export interface CommandFn {
 }
 
 export interface CommandOptions {
+	nameLocalizations?: Partial<Record<Locale, string | null>>;
 	description: string;
+	descriptionLocalizations?: Partial<Record<Locale, string | null>>;
 	options?: APIApplicationCommandOption[];
 	defaultPermission?: boolean;
 	type: ApplicationCommandType;
@@ -42,6 +45,8 @@ export interface AutocompleteFn {
 export class SlashCommand {
 	autocomplete?: AutocompleteFn;
 	name: string;
+	nameLocalizations?: Partial<Record<Locale, string | null>>;
+	descriptionLocalizations?: Partial<Record<Locale, string | null>>;
 	description: string;
 	fn: CommandFn;
 	requirements: SlashCommandRequirements;
@@ -55,6 +60,8 @@ export class SlashCommand {
 		options?: CommandOptions
 	) {
 		this.name = name;
+		this.nameLocalizations = options?.nameLocalizations;
+		this.descriptionLocalizations = options?.descriptionLocalizations;
 		this.fn = fn;
 		this.autocomplete = autocomplete;
 		this.requirements = {};

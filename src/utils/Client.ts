@@ -96,6 +96,8 @@ export class Client extends Discord.Client {
 					name: command.name,
 					description: command.description,
 					options: command.options?.options ?? undefined,
+					name_localizations: command.nameLocalizations,
+					description_localizations: command.descriptionLocalizations,
 				});
 			}
 

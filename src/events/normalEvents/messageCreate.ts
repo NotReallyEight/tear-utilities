@@ -22,8 +22,6 @@ export const event = new Event("messageCreate", async (client, message) => {
 
 		client.levelDates.set(message.author.id, message.createdAt);
 
-		await client.mongoClient.connect();
-
 		const database = client.mongoClient.db("tear-utilities");
 		const collection = database.collection<LevelSchema>("levels");
 
@@ -81,8 +79,6 @@ export const event = new Event("messageCreate", async (client, message) => {
 		);
 	} catch (err) {
 		Logger.error(`${(err as Error).name}: ${(err as Error).message}`);
-	} finally {
-		void client.mongoClient.close();
 	}
 });
 

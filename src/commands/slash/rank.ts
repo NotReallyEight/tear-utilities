@@ -49,7 +49,6 @@ export const command = new SlashCommand(
 		try {
 			await interaction.deferReply();
 
-			await client.mongoClient.connect();
 			const user = interaction.options.data[0]?.user ?? interaction.user;
 
 			const db = client.mongoClient.db("tear-utilities");
@@ -199,8 +198,6 @@ export const command = new SlashCommand(
 		} catch (err) {
 			console.log(err);
 			Logger.error(`${(err as Error).name}: ${(err as Error).message}`);
-		} finally {
-			void client.mongoClient.close();
 		}
 	},
 	undefined,

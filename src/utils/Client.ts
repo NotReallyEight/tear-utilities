@@ -139,8 +139,6 @@ export class Client extends Discord.Client {
 			Logger.info("Connected to MongoDB.");
 		} catch (error) {
 			Logger.error((error as Error).message);
-		} finally {
-			void this.mongoClient.close();
 		}
 	}
 

@@ -32,7 +32,7 @@
     "@tsconfig/node16": "^1.0.3",
     "@types/node": "^16.11.41",
     "bufferutil": "^4.0.6",
-    "canvas": "^2.9.1",
+    "canvas": "^2.9.3",
     "chalk": "^4.1.2",
     "discord-api-types": "^0.34.0",
     "discord.js": "^13.8.0",

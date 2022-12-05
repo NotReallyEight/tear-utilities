@@ -1,9 +1,9 @@
 import type Discord from "discord.js";
 import type { Client } from "../utils/Client";
 
-export interface EventListenerOptions {
+export type EventListenerOptions = {
 	once?: boolean;
-}
+};
 
 export class Event<K extends keyof Discord.ClientEvents>
 	implements EventListenerOptions

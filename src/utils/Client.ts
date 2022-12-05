@@ -12,26 +12,26 @@ import { Logger } from "./Logger";
 import type { ComponentEvent } from "./ComponentEvent";
 import { MongoClient } from "mongodb";
 
-export interface ClientOptions extends Discord.ClientOptions {
+export type ClientOptions = Discord.ClientOptions & {
 	prefix: string;
 	token: string;
-}
+};
 
-export interface EventImport {
+export type EventImport = {
 	event: Event<keyof Discord.ClientEvents>;
-}
+};
 
-export interface ComponentEventImport {
+export type ComponentEventImport = {
 	event: ComponentEvent;
-}
+};
 
-export interface CommandImport {
+export type CommandImport = {
 	command: Command;
-}
+};
 
-export interface SlashCommandImport {
+export type SlashCommandImport = {
 	command: SlashCommand;
-}
+};
 
 export class Client extends Discord.Client {
 	commands: Command[] = [];

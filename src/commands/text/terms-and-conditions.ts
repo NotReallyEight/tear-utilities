@@ -41,4 +41,3 @@ export const command = new Command(
 		},
 	}
 );
-

@@ -88,4 +88,3 @@ export const event = new ComponentEvent(
 		}
 	}
 );
-

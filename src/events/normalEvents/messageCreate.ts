@@ -81,4 +81,3 @@ export const event = new Event("messageCreate", async (client, message) => {
 		Logger.error(`${(err as Error).name}: ${(err as Error).message}`);
 	}
 });
-

@@ -11,36 +11,36 @@ import type {
 } from "discord.js";
 import type { Client } from "./Client";
 
-export interface SlashCommandRequirements {
+export type SlashCommandRequirements = {
 	custom?: (
 		interaction: Discord.BaseCommandInteraction,
 		client: Client
 	) => Promise<boolean> | boolean;
 	permissions?: APIApplicationCommandPermission[];
-}
+};
 
-export interface CommandFn {
+export type CommandFn = {
 	(
 		interaction: Discord.BaseCommandInteraction,
 		client: Client
 	): Promise<void> | void;
-}
+};
 
-export interface CommandOptions {
+export type CommandOptions = {
 	nameLocalizations?: Partial<Record<Locale, string | null>>;
 	description: string;
 	descriptionLocalizations?: Partial<Record<Locale, string | null>>;
 	options?: APIApplicationCommandOption[];
 	defaultPermission?: boolean;
 	type: ApplicationCommandType;
-}
+};
 
-export interface AutocompleteFn {
+export type AutocompleteFn = {
 	(
 		interaction: Discord.AutocompleteInteraction,
 		client: Client
 	): Promise<void> | void;
-}
+};
 
 export class SlashCommand {
 	autocomplete?: AutocompleteFn;

@@ -17,4 +17,3 @@ export const event = new Event(
 		void newMember.roles.add(role);
 	}
 );
-

@@ -238,4 +238,3 @@ export const command = new SlashCommand(
 		],
 	}
 );
-

@@ -61,8 +61,8 @@ export const event = new ComponentEvent(
 				content: "Please select your pronouns:",
 				components: [row],
 			});
-		} catch (err: any) {
-			Logger.error(`${(err as Error).name}: ${(err as Error).message}`);
+		} catch (err) {
+			Logger.error(err);
 		}
 	}
 );

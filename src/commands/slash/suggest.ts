@@ -65,8 +65,8 @@ export const command = new SlashCommand(
 			]);
 
 			await interaction.editReply("Suggestion sent!");
-		} catch (err: any) {
-			Logger.error(`${(err as Error).name}: ${(err as Error).message}`);
+		} catch (err) {
+			Logger.error(err);
 		}
 	},
 	undefined,

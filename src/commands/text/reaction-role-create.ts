@@ -43,8 +43,8 @@ export const command = new Command(
 				embeds: [embed],
 				components: [row],
 			});
-		} catch (err: any) {
-			Logger.error(`${(err as Error).name}: ${(err as Error).message}`);
+		} catch (err) {
+			Logger.error(err);
 			void message.channel.send(`Error: ${(err as Error).message}`);
 		}
 	},

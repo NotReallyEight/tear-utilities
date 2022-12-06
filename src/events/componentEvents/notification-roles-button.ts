@@ -86,8 +86,8 @@ export const event = new ComponentEvent(
 				content: "Please select your roles based on the pings you want:",
 				components: [row],
 			});
-		} catch (err: any) {
-			Logger.error(`${(err as Error).name}: ${(err as Error).message}`);
+		} catch (err) {
+			Logger.error(err);
 		}
 	}
 );

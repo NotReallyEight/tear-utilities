@@ -102,8 +102,8 @@ export const command = new SlashCommand(
 				default:
 					break;
 			}
-		} catch (err: any) {
-			Logger.error(`${(err as Error).name}: ${(err as Error).message}`);
+		} catch (err) {
+			Logger.error(err);
 		}
 	},
 	async (interaction, client) => {
@@ -172,8 +172,8 @@ export const command = new SlashCommand(
 				default:
 					break;
 			}
-		} catch (err: any) {
-			Logger.error(`${(err as Error).name}: ${(err as Error).message}`);
+		} catch (err) {
+			Logger.error(err);
 		}
 	},
 	{

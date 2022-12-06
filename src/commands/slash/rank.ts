@@ -5,6 +5,7 @@ import {
 	ApplicationCommandType,
 } from "discord-api-types/v9";
 import { join } from "node:path";
+import { cwd } from "node:process";
 import type { LevelSchema } from "../../schemas";
 import { Logger } from "../../utils/Logger";
 import { SlashCommand } from "../../utils/SlashCommand";
@@ -68,7 +69,7 @@ export const command = new SlashCommand(
 			const canvas = createCanvas(3840, 2160);
 			const ctx = canvas.getContext("2d");
 			const background = await loadImage(
-				join(__dirname, "..", "..", "..", "assets", "rank-card-background.jpg")
+				join(cwd(), "assets", "rank-card-background.jpg")
 			);
 			const pfp = await loadImage(
 				user.avatarURL({

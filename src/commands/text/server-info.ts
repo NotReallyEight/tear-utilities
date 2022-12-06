@@ -4,6 +4,7 @@ import { join } from "node:path";
 import { Logger } from "../../utils/Logger";
 import { config } from "../../config";
 import type { APIEmbed } from "discord-api-types/v9";
+import { cwd } from "node:process";
 
 export const command = new Command(
 	"server-info",
@@ -11,7 +12,7 @@ export const command = new Command(
 		try {
 			let serverInfo = "";
 			const readerStream = createReadStream(
-				join(__dirname, "..", "..", "..", "assets", "server-info.txt")
+				join(cwd(), "assets", "server-info.txt")
 			);
 
 			readerStream.on("data", (chunk) => {
@@ -42,8 +43,8 @@ export const command = new Command(
 			readerStream.on("error", (err) => {
 				Logger.error(`${err.name}: ${err.message}`);
 			});
-		} catch (err: any) {
-			Logger.error(`${(err as Error).name}: ${(err as Error).message}`);
+		} catch (err) {
+			Logger.error(err);
 		}
 	},
 	{

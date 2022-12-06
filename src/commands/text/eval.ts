@@ -1,29 +1,7 @@
-import util from "node:util";
 import { config } from "../../config";
 import { Command } from "../../utils/Command";
+import { inspect } from "../../utils/inspect";
 import { Logger } from "../../utils/Logger";
-
-/**
- * Inspect an eval result.
- * @param value - The value to inspect
- * @returns A string representation of the value
- */
-const inspect = (value: unknown) => {
-	switch (typeof value) {
-		case "string":
-			return value;
-		case "bigint":
-		case "number":
-		case "boolean":
-		case "function":
-		case "symbol":
-			return value.toString();
-		case "object":
-			return util.inspect(value);
-		default:
-			return "undefined";
-	}
-};
 
 export const command = new Command(
 	"eval",
@@ -33,7 +11,7 @@ export const command = new Command(
 			let result, typeOfResult;
 
 			try {
-				result = (await eval(text)) as unknown;
+				result = (await (0, eval)(text)) as unknown;
 				typeOfResult = typeof result;
 				result = inspect(result);
 			} catch (e) {

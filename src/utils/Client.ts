@@ -11,7 +11,7 @@ import type {
 import { Client as DiscordClient, GuildChannel } from "discord.js";
 import { MongoClient } from "mongodb";
 import { readdirSync } from "node:fs";
-import { join } from "node:path";
+import { URL } from "node:url";
 import { config } from "../config";
 import type { Command } from "./Command";
 import type { ComponentEvent } from "./ComponentEvent";
@@ -49,7 +49,7 @@ export class Client extends DiscordClient {
 	readyPromise: Promise<void>;
 	restClient?: REST;
 	slashCommands: SlashCommand[] = [];
-	private resolvePromise!: (arg: any) => void;
+	private resolvePromise!: () => void;
 	constructor(options: ClientOptions) {
 		super(options);
 		this.prefix = options.prefix;
@@ -63,40 +63,39 @@ export class Client extends DiscordClient {
 		this.once("ready", this.resolvePromise);
 	}
 
-	public addCommands(path: string): this {
-		const commandFiles = readdirSync(path);
+	public async addCommands(input: string) {
+		const commands = await Promise.all<CommandImport>(
+			readdirSync(new URL(input, import.meta.url))
+				.filter((f) => f.endsWith(".js"))
+				.map((file) => import(`./${input}/${file}`))
+		);
 
-		for (const file of commandFiles.filter((f) => f.endsWith(".js"))) {
-			const { command } = require(join(path, file)) as CommandImport;
+		for (const { command } of commands) this.commands.push(command);
+	}
 
-			this.commands.push(command);
-		}
+	public async addComponentEvents(input: string) {
+		const events = await Promise.all<ComponentEventImport>(
+			readdirSync(new URL(input, import.meta.url))
+				.filter((f) => f.endsWith(".js"))
+				.map((file) => import(`./${input}/${file}`))
+		);
+
+		for (const { event } of events) this.componentEvents.push(event);
 		return this;
 	}
 
-	public addComponentEvents(path: string): this {
-		const eventFiles = readdirSync(path);
-
-		for (const file of eventFiles.filter((f) => f.endsWith(".js"))) {
-			const { event } = require(join(path, file)) as ComponentEventImport;
-
-			this.componentEvents.push(event);
-		}
-
-		return this;
-	}
-
-	public async addSlashCommands(path: string): Promise<this> {
+	public async addSlashCommands(input: string): Promise<this> {
 		try {
 			await this.readyPromise;
-			const commandFiles = readdirSync(path);
+			const commandFiles = await Promise.all<SlashCommandImport>(
+				readdirSync(new URL(input, import.meta.url))
+					.filter((f) => f.endsWith(".js"))
+					.map((file) => import(`./${input}/${file}`))
+			);
 			const commands: RESTPostAPIApplicationGuildCommandsJSONBody[] = [];
 
-			for (const file of commandFiles.filter((f) => f.endsWith(".js"))) {
-				const { command } = require(join(path, file)) as SlashCommandImport;
-
+			for (const { command } of commandFiles) {
 				this.slashCommands.push(command);
-
 				commands.push({
 					default_permission: command.options?.defaultPermission,
 					type: command.type,
@@ -107,26 +106,27 @@ export class Client extends DiscordClient {
 					description_localizations: command.descriptionLocalizations,
 				});
 			}
-
 			await this.restClient!.put(
 				Routes.applicationGuildCommands(this.user!.id, config.guildId),
 				{
 					body: commands,
 				}
 			);
-		} catch (error: any) {
-			Logger.error((error as Error).message);
+		} catch (err) {
+			Logger.error(err);
 		}
 
 		return this;
 	}
 
-	public addEvents(path: string): this {
-		const eventFiles = readdirSync(path);
+	public async addEvents(input: string) {
+		const eventFiles = await Promise.all<EventImport>(
+			readdirSync(new URL(input, import.meta.url))
+				.filter((f) => f.endsWith(".js"))
+				.map((file) => import(`./${input}/${file}`))
+		);
 
-		for (const file of eventFiles.filter((f) => f.endsWith(".js"))) {
-			const { event } = require(join(path, file)) as EventImport;
-
+		for (const { event } of eventFiles)
 			if (event.once ?? false)
 				this.once(event.event, (...args) => {
 					void event.listener(this, ...args);
@@ -135,8 +135,6 @@ export class Client extends DiscordClient {
 				this.on(event.event, (...args) => {
 					void event.listener(this, ...args);
 				});
-		}
-		return this;
 	}
 
 	public async connectMongoDatabase(): Promise<void> {
@@ -144,8 +142,8 @@ export class Client extends DiscordClient {
 			await this.mongoClient.connect();
 
 			Logger.info("Connected to MongoDB.");
-		} catch (error) {
-			Logger.error((error as Error).message);
+		} catch (err) {
+			Logger.error(err);
 		}
 	}
 

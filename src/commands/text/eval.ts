@@ -11,7 +11,7 @@ export const command = new Command(
 			let result, typeOfResult;
 
 			try {
-				result = (await (0, eval)(text)) as unknown;
+				result = (await eval(text)) as unknown;
 				typeOfResult = typeof result;
 				result = inspect(result);
 			} catch (e) {
@@ -52,3 +52,4 @@ export const command = new Command(
 		},
 	}
 );
+

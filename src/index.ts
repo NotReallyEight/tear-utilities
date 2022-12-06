@@ -9,6 +9,7 @@ const client = new Client({
 		GatewayIntentBits.GuildMessages,
 		GatewayIntentBits.GuildMessageReactions,
 		GatewayIntentBits.GuildMembers,
+		GatewayIntentBits.MessageContent,
 	],
 	prefix: config.prefix,
 	token: config.token,

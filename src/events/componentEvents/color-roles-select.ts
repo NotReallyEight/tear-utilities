@@ -1,6 +1,6 @@
+import { config } from "../../config";
 import { ComponentEvent } from "../../utils/ComponentEvent";
 import { Logger } from "../../utils/Logger";
-import { config } from "../../config";
 
 const roleIds = Object.values(config.roles.colorRoles);
 
@@ -8,7 +8,8 @@ export const event = new ComponentEvent(
 	"color-roles-select",
 	async (interaction) => {
 		try {
-			if (!interaction.isSelectMenu() || !interaction.inCachedGuild()) return;
+			if (!interaction.isStringSelectMenu() || !interaction.inCachedGuild())
+				return;
 
 			const newRoles = interaction.member.roles.cache
 				.map((r) => r.id)

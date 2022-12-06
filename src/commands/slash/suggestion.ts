@@ -1,25 +1,25 @@
-import { SlashCommand } from "../../utils/SlashCommand";
-import { Logger } from "../../utils/Logger";
 import {
-	ApplicationCommandType,
 	ApplicationCommandOptionType,
 	ApplicationCommandPermissionType,
+	ApplicationCommandType,
 } from "discord-api-types/v9";
-import { config } from "../../config";
 import type { ApplicationCommandOptionChoiceData } from "discord.js";
+import { ChannelType } from "discord.js";
+import { config } from "../../config";
+import { Logger } from "../../utils/Logger";
+import { SlashCommand } from "../../utils/SlashCommand";
 
 export const command = new SlashCommand(
 	"suggestion",
 	async (interaction, client) => {
 		try {
-			if (!interaction.isApplicationCommand() || !interaction.inCachedGuild())
-				return;
+			if (!interaction.inCachedGuild()) return;
 
 			const suggestionsChannel = client.channels.cache.get(
 				config.logs.suggestions
 			)!;
 
-			if (!suggestionsChannel.isText()) return;
+			if (suggestionsChannel.type !== ChannelType.GuildText) return;
 
 			await interaction.deferReply();
 
@@ -52,8 +52,8 @@ export const command = new SlashCommand(
 			)!;
 
 			if (
-				!acceptedSuggestionsChannel.isText() ||
-				!declinedSuggestionsChannel.isText()
+				acceptedSuggestionsChannel.type !== ChannelType.GuildText ||
+				declinedSuggestionsChannel.type !== ChannelType.GuildText
 			)
 				return;
 
@@ -76,29 +76,29 @@ export const command = new SlashCommand(
 						? "Accepted"
 						: "Declined"
 				} by**: <@${interaction.member.id}>`;
+			const embeds = suggestionMessage.embeds.map((e) => e.toJSON());
+
 			switch (interaction.options.data[0].name) {
 				case "accept":
-					suggestionMessage.embeds[0].title = `Suggestion Accepted #${
-						suggestionMessage.embeds[0].title!.split("#")[1]
+					embeds[0].title = `Suggestion Accepted #${
+						embeds[0].title!.split("#")[1]
 					}`;
 					await acceptedSuggestionsChannel.send({
 						content,
-						embeds: suggestionMessage.embeds,
+						embeds,
 					});
 					await interaction.editReply("Suggestion accepted.");
 					break;
-
 				case "decline":
-					suggestionMessage.embeds[0].title = `Suggestion Declined #${
-						suggestionMessage.embeds[0].title!.split("#")[1]
+					embeds[0].title = `Suggestion Declined #${
+						embeds[0].title!.split("#")[1]
 					}`;
 					await declinedSuggestionsChannel.send({
 						content,
-						embeds: suggestionMessage.embeds,
+						embeds,
 					});
 					await interaction.editReply("Suggestion declined.");
 					break;
-
 				default:
 					break;
 			}
@@ -114,7 +114,7 @@ export const command = new SlashCommand(
 				config.logs.suggestions
 			)!;
 
-			if (!suggestionsChannel.isText()) return;
+			if (suggestionsChannel.type !== ChannelType.GuildText) return;
 
 			const suggestionsMessages = await suggestionsChannel.messages.fetch({
 				limit: 100,

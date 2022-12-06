@@ -4,16 +4,16 @@ import type {
 	Locale,
 } from "discord-api-types/v9";
 import { ApplicationCommandType } from "discord-api-types/v9";
-import type Discord from "discord.js";
 import type {
 	AutocompleteInteraction,
-	BaseCommandInteraction,
+	ChatInputCommandInteraction,
+	CommandInteraction,
 } from "discord.js";
 import type { Client } from "./Client";
 
 export type SlashCommandRequirements = {
 	custom?: (
-		interaction: Discord.BaseCommandInteraction,
+		interaction: CommandInteraction,
 		client: Client
 	) => Promise<boolean> | boolean;
 	permissions?: APIApplicationCommandPermission[];
@@ -21,7 +21,7 @@ export type SlashCommandRequirements = {
 
 export type CommandFn = {
 	(
-		interaction: Discord.BaseCommandInteraction,
+		interaction: ChatInputCommandInteraction,
 		client: Client
 	): Promise<void> | void;
 };
@@ -36,10 +36,7 @@ export type CommandOptions = {
 };
 
 export type AutocompleteFn = {
-	(
-		interaction: Discord.AutocompleteInteraction,
-		client: Client
-	): Promise<void> | void;
+	(interaction: AutocompleteInteraction, client: Client): Promise<void> | void;
 };
 
 export class SlashCommand {
@@ -82,14 +79,14 @@ export class SlashCommand {
 	}
 
 	public async checkPermissions(
-		interaction: Discord.BaseCommandInteraction,
+		interaction: CommandInteraction,
 		client: Client
 	): Promise<boolean> {
 		return this.enoughRequirements(this.requirements, interaction, client);
 	}
 
 	public async execute(
-		interaction: BaseCommandInteraction,
+		interaction: ChatInputCommandInteraction,
 		client: Client
 	): Promise<boolean> {
 		if (!(await this.checkPermissions(interaction, client))) return false;
@@ -111,7 +108,7 @@ export class SlashCommand {
 
 	private async enoughRequirements(
 		requirements: SlashCommandRequirements,
-		interaction: Discord.BaseCommandInteraction,
+		interaction: CommandInteraction,
 		client: Client
 	): Promise<boolean> {
 		const { custom } = requirements;

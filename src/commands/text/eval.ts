@@ -1,5 +1,4 @@
 import util from "node:util";
-import prettier from "prettier";
 import { config } from "../../config";
 import { Command } from "../../utils/Command";
 import { Logger } from "../../utils/Logger";
@@ -30,18 +29,10 @@ export const command = new Command(
 	"eval",
 	async (message, args, _client) => {
 		try {
-			let result,
-				text = args.join(" "),
-				typeOfResult;
+			const text = args.join(" ");
+			let result, typeOfResult;
 
 			try {
-				text = prettier
-					.format(text, {
-						...((await prettier
-							.resolveConfig(".prettierrc.json")
-							.catch(() => null)) ?? {}),
-					})
-					.slice(0, -1);
 				result = (await eval(text)) as unknown;
 				typeOfResult = typeof result;
 				result = inspect(result);
@@ -49,7 +40,6 @@ export const command = new Command(
 				typeOfResult = typeof e;
 				result = inspect(e);
 			}
-
 			await message.channel.send({
 				embeds: [
 					{

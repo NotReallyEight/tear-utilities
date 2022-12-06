@@ -1,8 +1,9 @@
+import { StringSelectMenuBuilder } from "@discordjs/builders";
 import type { GuildMemberRoleManager } from "discord.js";
-import { MessageActionRow } from "discord.js";
+import { ActionRowBuilder, ComponentType } from "discord.js";
+import { config } from "../../config";
 import { ComponentEvent } from "../../utils/ComponentEvent";
 import { Logger } from "../../utils/Logger";
-import { config } from "../../config";
 
 export const event = new ComponentEvent(
 	"pronoun-roles-button",
@@ -26,32 +27,34 @@ export const event = new ComponentEvent(
 					continue;
 				}
 
-			const row = new MessageActionRow().addComponents([
-				{
-					customId: "pronoun-roles-select",
-					disabled: false,
-					maxValues: 3,
-					minValues: 0,
-					options: [
-						{
-							label: "He/Him",
-							value: `pronoun-roles-${config.roles.pronounRoles.he}`,
-							default: pronounRoles.includes(config.roles.pronounRoles.he),
-						},
-						{
-							label: "She/Her",
-							value: `pronoun-roles-${config.roles.pronounRoles.she}`,
-							default: pronounRoles.includes(config.roles.pronounRoles.she),
-						},
-						{
-							label: "They/Them",
-							value: `pronoun-roles-${config.roles.pronounRoles.they}`,
-							default: pronounRoles.includes(config.roles.pronounRoles.they),
-						},
-					],
-					type: "SELECT_MENU",
-				},
-			]);
+			const row = new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(
+				[
+					new StringSelectMenuBuilder({
+						custom_id: "pronoun-roles-select",
+						disabled: false,
+						max_values: 3,
+						min_values: 0,
+						options: [
+							{
+								label: "He/Him",
+								value: `pronoun-roles-${config.roles.pronounRoles.he}`,
+								default: pronounRoles.includes(config.roles.pronounRoles.he),
+							},
+							{
+								label: "She/Her",
+								value: `pronoun-roles-${config.roles.pronounRoles.she}`,
+								default: pronounRoles.includes(config.roles.pronounRoles.she),
+							},
+							{
+								label: "They/Them",
+								value: `pronoun-roles-${config.roles.pronounRoles.they}`,
+								default: pronounRoles.includes(config.roles.pronounRoles.they),
+							},
+						],
+						type: ComponentType.StringSelect,
+					}),
+				]
+			);
 
 			await interaction.reply({
 				ephemeral: true,

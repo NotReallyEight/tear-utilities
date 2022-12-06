@@ -1,9 +1,10 @@
-import { Command } from "../../utils/Command";
-import { Logger } from "../../utils/Logger";
+import type { APIEmbed } from "discord-api-types/v9";
 import { createReadStream } from "node:fs";
 import { join } from "node:path";
+import { cwd } from "node:process";
 import { config } from "../../config";
-import type { APIEmbed } from "discord-api-types/v9";
+import { Command } from "../../utils/Command";
+import { Logger } from "../../utils/Logger";
 
 export const command = new Command(
 	"terms-and-conditions",
@@ -11,7 +12,7 @@ export const command = new Command(
 		try {
 			let ourLinks = "";
 			const readerStream = createReadStream(
-				join(__dirname, "..", "..", "..", "assets", "terms-and-conditions.txt")
+				join(cwd(), "assets", "terms-and-conditions.txt")
 			);
 
 			readerStream.on("data", (chunk) => {
@@ -29,8 +30,8 @@ export const command = new Command(
 					embeds,
 				});
 			});
-		} catch (err: any) {
-			Logger.error(`${(err as Error).name}: ${(err as Error).message}`);
+		} catch (err) {
+			Logger.error(err);
 			void message.channel.send(`Error: ${(err as Error).message}`);
 		}
 	},
@@ -41,4 +42,3 @@ export const command = new Command(
 		},
 	}
 );
-

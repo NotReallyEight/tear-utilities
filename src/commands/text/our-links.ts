@@ -4,6 +4,7 @@ import { createReadStream } from "node:fs";
 import { join } from "node:path";
 import { config } from "../../config";
 import type { APIEmbed } from "discord-api-types/v9";
+import { cwd } from "node:process";
 
 export const command = new Command(
 	"our-links",
@@ -11,7 +12,7 @@ export const command = new Command(
 		try {
 			let ourLinks = "";
 			const readerStream = createReadStream(
-				join(__dirname, "..", "..", "..", "assets", "our-links.txt")
+				join(cwd(), "assets", "our-links.txt")
 			);
 
 			readerStream.on("data", (chunk) => {
@@ -29,8 +30,8 @@ export const command = new Command(
 					embeds,
 				});
 			});
-		} catch (err: any) {
-			Logger.error(`${(err as Error).name}: ${(err as Error).message}`);
+		} catch (err) {
+			Logger.error(err);
 			void message.channel.send(`Error: ${(err as Error).message}`);
 		}
 	},

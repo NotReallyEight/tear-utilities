@@ -1,9 +1,10 @@
 import type { APIEmbed } from "discord-api-types/v9";
 import { ApplicationCommandType } from "discord-api-types/v9";
-import { SlashCommand } from "../../utils/SlashCommand";
+import type { GuildTextBasedChannel } from "discord.js";
+import { ChannelType } from "discord.js";
 import { config } from "../../config";
 import { Logger } from "../../utils/Logger";
-import type { GuildTextBasedChannel } from "discord.js";
+import { SlashCommand } from "../../utils/SlashCommand";
 
 export const command = new SlashCommand(
 	"suggest",
@@ -18,7 +19,11 @@ export const command = new SlashCommand(
 				config.logs.suggestions
 			)!;
 
-			if (suggestionChannel.isThread() || !suggestionChannel.isText()) return;
+			if (
+				suggestionChannel.isThread() ||
+				suggestionChannel.type !== ChannelType.GuildText
+			)
+				return;
 
 			const message = await suggestionChannel.messages.fetch(
 				"931837510408089622"
@@ -60,8 +65,8 @@ export const command = new SlashCommand(
 			]);
 
 			await interaction.editReply("Suggestion sent!");
-		} catch (err: any) {
-			Logger.error(`${(err as Error).name}: ${(err as Error).message}`);
+		} catch (err) {
+			Logger.error(err);
 		}
 	},
 	undefined,

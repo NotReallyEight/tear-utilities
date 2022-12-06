@@ -1,17 +1,16 @@
-import { Command } from "../../utils/Command";
 import { createReadStream } from "node:fs";
 import { join } from "node:path";
-import { Logger } from "../../utils/Logger";
+import { cwd } from "node:process";
 import { config } from "../../config";
+import { Command } from "../../utils/Command";
+import { Logger } from "../../utils/Logger";
 
 export const command = new Command(
 	"rules",
 	(message) => {
 		try {
 			let rules = "";
-			const readerStream = createReadStream(
-				join(__dirname, "..", "..", "..", "assets", "rules.txt")
-			);
+			const readerStream = createReadStream(join(cwd(), "assets", "rules.txt"));
 
 			readerStream.on("data", (chunk) => {
 				rules += chunk;
@@ -32,8 +31,8 @@ export const command = new Command(
 			readerStream.on("error", (err) => {
 				Logger.error(`${err.name}: ${err.message}`);
 			});
-		} catch (err: any) {
-			Logger.error(`${(err as Error).name}: ${(err as Error).message}`);
+		} catch (err) {
+			Logger.error(err);
 		}
 	},
 	{

@@ -1,15 +1,16 @@
 {
   "name": "tear-utilities",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Utility bot for Tear Paradise",
-  "main": "dist/index.js",
+  "exports": "./dist/index.js",
+  "main": "./dist/index.js",
   "scripts": {
     "build": "tsup",
     "lint": "eslint src --fix",
-    "prepare": "npm test && husky install",
+    "prepare": "npm test",
     "prettier": "prettier --write src/**/*.ts",
-    "test": "eslint src && tsc --noEmit && npm run prettier",
-    "start": "npm run build && node --enable-source-maps ."
+    "start": "npm run build && node --trace-warnings --enable-source-maps .",
+    "test": "eslint src && tsc --noEmit"
   },
   "repository": {
     "type": "git",
@@ -19,8 +20,9 @@
     "utility-bot"
   ],
   "engines": {
-    "node": ">=12.0.0"
+    "node": ">=18.0.0"
   },
+  "type": "module",
   "author": "NotReallyEight",
   "license": "MIT",
   "bugs": {
@@ -28,30 +30,33 @@
   },
   "homepage": "https://github.com/NotReallyEight/tear-utilities#readme",
   "dependencies": {
-    "@discordjs/rest": "^0.5.0",
-    "@tsconfig/node16": "^1.0.3",
-    "@types/node": "^16.11.41",
-    "bufferutil": "^4.0.6",
-    "canvas": "^2.9.1",
-    "chalk": "^4.1.2",
-    "discord-api-types": "^0.34.0",
-    "discord.js": "^13.8.0",
-    "dotenv": "^16.0.1",
-    "mongodb": "4.7",
-    "prettier": "^2.7.1",
-    "tsup": "^6.1.2",
-    "utf-8-validate": "^5.0.9",
-    "zlib-sync": "^0.1.7"
+    "@discordjs/builders": "*",
+    "@discordjs/rest": "*",
+    "canvas": "^2.10.2",
+    "chalk": "^5.1.2",
+    "discord-api-types": "*",
+    "discord.js": "^14.7.1",
+    "dotenv": "^16.0.3",
+    "mongodb": "^4.12.1",
+    "tsup": "^6.5.0"
   },
+	"optionalDependencies": {
+    "bufferutil": "^4.0.7",
+		"erlpack": "github:discord/erlpack",
+		"utf-8-validate": "^5.0.10",
+		"zlib-sync": "^0.1.7"
+	},
   "devDependencies": {
-    "@types/express": "^4.17.13",
-    "@types/prettier": "^2.6.3",
-    "@typescript-eslint/eslint-plugin": "^5.29.0",
-    "@typescript-eslint/parser": "^5.29.0",
-    "eslint": "^8.18.0",
+    "@tsconfig/node18": "^1.0.1",
+    "@types/express": "^4.17.14",
+    "@types/node": "^18.11.10",
+    "@types/prettier": "^2.7.1",
+    "@typescript-eslint/eslint-plugin": "^5.45.1",
+    "@typescript-eslint/parser": "^5.45.1",
+    "eslint": "^8.29.0",
     "eslint-plugin-node": "^11.1.0",
-    "husky": "^8.0.1",
-    "node": "^16.15.1",
-    "typescript": "^4.7.4"
+    "husky": "^8.0.2",
+    "prettier": "^2.8.0",
+    "typescript": "^4.9.3"
   }
 }

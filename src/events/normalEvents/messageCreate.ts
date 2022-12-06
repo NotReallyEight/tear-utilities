@@ -78,7 +78,6 @@ export const event = new Event("messageCreate", async (client, message) => {
 			}
 		);
 	} catch (err) {
-		Logger.error(`${(err as Error).name}: ${(err as Error).message}`);
+		Logger.error(err);
 	}
 });
-

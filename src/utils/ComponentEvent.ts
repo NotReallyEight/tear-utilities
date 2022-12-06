@@ -6,12 +6,12 @@ export type ButtonEventFn = (
 	client: Client
 ) => Promise<void> | void;
 
-export interface ComponentEventRequirements {
+export type ComponentEventRequirements = {
 	custom?: (
 		interaction: MessageComponentInteraction,
 		client: Client
 	) => Promise<boolean> | boolean;
-}
+};
 
 export class ComponentEvent {
 	name: string;

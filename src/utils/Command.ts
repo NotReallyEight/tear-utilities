@@ -1,23 +1,23 @@
-import type Discord from "discord.js";
+import type { Message } from "discord.js";
 import type { Client } from "./Client";
 import { Logger } from "./Logger";
 
-export interface CommandRequirements {
+export type CommandRequirements = {
 	custom?: (
-		message: Discord.Message,
+		message: Message,
 		args: string[],
 		client: Client
 	) => Promise<boolean> | boolean;
-}
+};
 
-export interface CommandFn {
-	(message: Discord.Message, args: string[], client: Client): void;
-}
+export type CommandFn = {
+	(message: Message, args: string[], client: Client): void;
+};
 
-export interface CommandOptions {
+export type CommandOptions = {
 	description?: string;
 	expectedArguments?: string;
-}
+};
 
 export class Command {
 	names: string[];
@@ -47,7 +47,7 @@ export class Command {
 	}
 
 	public async checkPermissions(
-		message: Discord.Message,
+		message: Message,
 		args: string[],
 		client: Client
 	): Promise<boolean> {
@@ -55,7 +55,7 @@ export class Command {
 	}
 
 	public async execute(
-		message: Discord.Message,
+		message: Message,
 		args: string[],
 		client: Client
 	): Promise<boolean> {
@@ -68,7 +68,7 @@ export class Command {
 
 	private async enoughRequirements(
 		requirements: CommandRequirements,
-		message: Discord.Message,
+		message: Message,
 		args: string[],
 		client: Client
 	): Promise<boolean> {

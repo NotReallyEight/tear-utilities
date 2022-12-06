@@ -1,13 +1,14 @@
+import type { Canvas } from "canvas";
+import { createCanvas, loadImage } from "canvas";
 import {
 	ApplicationCommandOptionType,
 	ApplicationCommandType,
 } from "discord-api-types/v9";
-import type { Canvas } from "canvas";
-import { createCanvas, loadImage } from "canvas";
 import { join } from "node:path";
-import { SlashCommand } from "../../utils/SlashCommand";
-import { Logger } from "../../utils/Logger";
+import { cwd } from "node:process";
 import type { LevelSchema } from "../../schemas";
+import { Logger } from "../../utils/Logger";
+import { SlashCommand } from "../../utils/SlashCommand";
 
 const adjustFontSize = (canvas: Canvas, text: string) => {
 	let fontSize = 150;
@@ -68,11 +69,11 @@ export const command = new SlashCommand(
 			const canvas = createCanvas(3840, 2160);
 			const ctx = canvas.getContext("2d");
 			const background = await loadImage(
-				join(__dirname, "..", "..", "..", "assets", "rank-card-background.jpg")
+				join(cwd(), "assets", "rank-card-background.jpg")
 			);
 			const pfp = await loadImage(
 				user.avatarURL({
-					format: "png",
+					extension: "png",
 					size: 512,
 				}) ??
 					`https://cdn.discordapp.com/embed/avatars/${
@@ -196,7 +197,6 @@ export const command = new SlashCommand(
 				files: [buffer],
 			});
 		} catch (err) {
-			console.log(err);
 			Logger.error(`${(err as Error).name}: ${(err as Error).message}`);
 		}
 	},
@@ -242,4 +242,3 @@ export const command = new SlashCommand(
 		],
 	}
 );
-

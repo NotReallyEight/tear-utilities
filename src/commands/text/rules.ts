@@ -1,3 +1,4 @@
+import type { GuildTextBasedChannel, StageChannel } from "discord.js";
 import { createReadStream } from "node:fs";
 import { join } from "node:path";
 import { cwd } from "node:process";
@@ -8,6 +9,10 @@ import { Logger } from "../../utils/Logger";
 export const command = new Command(
 	"rules",
 	(message) => {
+		const channel = message.channel as Exclude<
+			GuildTextBasedChannel,
+			StageChannel
+		>;
 		try {
 			let rules = "";
 			const readerStream = createReadStream(join(cwd(), "assets", "rules.txt"));
@@ -17,7 +22,7 @@ export const command = new Command(
 			});
 
 			readerStream.on("end", () => {
-				void message.channel.send({
+				void channel.send({
 					embeds: [
 						{
 							title: "Rules",
@@ -42,3 +47,4 @@ export const command = new Command(
 		},
 	}
 );
+

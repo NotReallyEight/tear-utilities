@@ -1,3 +1,4 @@
+import type { GuildTextBasedChannel, StageChannel } from "discord.js";
 import { config } from "../../config";
 import { Command } from "../../utils/Command";
 import { inspect } from "../../utils/inspect";
@@ -18,7 +19,11 @@ export const command = new Command(
 				typeOfResult = typeof e;
 				result = inspect(e);
 			}
-			await message.channel.send({
+			const channel = message.channel as Exclude<
+				GuildTextBasedChannel,
+				StageChannel
+			>;
+			await channel.send({
 				embeds: [
 					{
 						title: "Eval",

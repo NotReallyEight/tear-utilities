@@ -5,10 +5,15 @@ import { Logger } from "../../utils/Logger";
 import { config } from "../../config";
 import type { APIEmbed } from "discord-api-types/v9";
 import { cwd } from "node:process";
+import type { GuildTextBasedChannel, StageChannel } from "discord.js";
 
 export const command = new Command(
 	"server-info",
 	(message) => {
+		const channel = message.channel as Exclude<
+			GuildTextBasedChannel,
+			StageChannel
+		>;
 		try {
 			let serverInfo = "";
 			const readerStream = createReadStream(
@@ -35,7 +40,7 @@ export const command = new Command(
 						});
 				});
 
-				void message.channel.send({
+				void channel.send({
 					embeds,
 				});
 			});
@@ -54,3 +59,4 @@ export const command = new Command(
 		},
 	}
 );
+

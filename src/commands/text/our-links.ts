@@ -5,10 +5,15 @@ import { join } from "node:path";
 import { config } from "../../config";
 import type { APIEmbed } from "discord-api-types/v9";
 import { cwd } from "node:process";
+import type { GuildTextBasedChannel, StageChannel } from "discord.js";
 
 export const command = new Command(
 	"our-links",
 	(message) => {
+		const channel = message.channel as Exclude<
+			GuildTextBasedChannel,
+			StageChannel
+		>;
 		try {
 			let ourLinks = "";
 			const readerStream = createReadStream(
@@ -26,13 +31,13 @@ export const command = new Command(
 					description: ourLinks,
 					color: config.commandsEmbedsColor,
 				});
-				void message.channel.send({
+				void channel.send({
 					embeds,
 				});
 			});
 		} catch (err) {
 			Logger.error(err);
-			void message.channel.send(`Error: ${(err as Error).message}`);
+			void channel.send(`Error: ${(err as Error).message}`);
 		}
 	},
 	{
@@ -42,3 +47,4 @@ export const command = new Command(
 		},
 	}
 );
+

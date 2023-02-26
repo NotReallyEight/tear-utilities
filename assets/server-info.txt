@@ -12,9 +12,7 @@
 
 <#918576105806524418> - The general voice chat of the server. Here you can hang out with friends all around the globe with your real voice! :eyes:
 
-<#931589783740883015> - The suggestions channel, here you can vote for suggestions made by the community!
-<#931590305046724628> - Approved suggestions go here, congratulations if your suggestion got approved!
-<#931590325644972052> - Declined suggestions go here, if your suggestion got declined, better luck next time!
+<#1049763892814946334> - The suggestions channel, here you can make and vote for suggestions!
 
 ---
 

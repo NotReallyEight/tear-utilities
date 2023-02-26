@@ -1,3 +1,4 @@
+import type { GuildTextBasedChannel, StageChannel } from "discord.js";
 import { config } from "../../config";
 import type { LevelSchema } from "../../schemas";
 import { Event } from "../../utils/Event";
@@ -11,6 +12,11 @@ export const event = new Event("messageCreate", async (client, message) => {
 			message.content.startsWith(client.prefix)
 		)
 			return;
+
+		const channel = message.channel as Exclude<
+			GuildTextBasedChannel,
+			StageChannel
+		>;
 
 		const levelDate = client.levelDates.get(message.author.id);
 
@@ -40,7 +46,7 @@ export const event = new Event("messageCreate", async (client, message) => {
 			userDocument.level * userDocument.level * 200 < xpToAdd
 		) {
 			xpToAdd -= userDocument.level * userDocument.level * 200;
-			void message.channel.send(
+			void channel.send(
 				`Congratulations <@${message.author.id}>! You have reached level ${
 					userDocument.level + 1
 				}!`
@@ -81,3 +87,4 @@ export const event = new Event("messageCreate", async (client, message) => {
 		Logger.error(err);
 	}
 });
+

@@ -1,6 +1,6 @@
 import type { APIEmbed } from "discord-api-types/v9";
 import { ApplicationCommandType } from "discord-api-types/v9";
-import type { GuildTextBasedChannel } from "discord.js";
+import type { GuildTextBasedChannel, StageChannel } from "discord.js";
 import { ChannelType } from "discord.js";
 import { config } from "../../config";
 import { Logger } from "../../utils/Logger";
@@ -43,7 +43,7 @@ export const command = new SlashCommand(
 
 			const channel = interaction.guild.channels.cache.get(
 				config.logs.suggestions
-			) as GuildTextBasedChannel;
+			) as Exclude<GuildTextBasedChannel, StageChannel>;
 
 			const embed: Omit<APIEmbed, "type"> = {
 				title: `New Suggestion! #${lastSuggestionId}`,
@@ -86,3 +86,4 @@ export const command = new SlashCommand(
 		],
 	}
 );
+

@@ -37,7 +37,7 @@
 		"discord-api-types": "*",
 		"discord.js": "^14.7.1",
 		"dotenv": "^16.0.3",
-		"mongodb": "^4.12.1",
+		"mongodb": "^5.3.0",
 		"tsup": "^6.5.0"
 	},
 	"optionalDependencies": {

@@ -1,4 +1,4 @@
-import type { Canvas } from "canvas";
+import type { Canvas, CanvasRenderingContext2D } from "canvas";
 import { createCanvas, loadImage } from "canvas";
 import {
 	ApplicationCommandOptionType,
@@ -242,3 +242,4 @@ export const command = new SlashCommand(
 		],
 	}
 );
+

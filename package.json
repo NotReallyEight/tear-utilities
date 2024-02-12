@@ -36,7 +36,7 @@
 		"chalk": "^5.1.2",
 		"discord-api-types": "*",
 		"discord.js": "^14.7.1",
-		"dotenv": "^16.0.3",
+		"dotenv": "^16.4.2",
 		"mongodb": "^5.5.0",
 		"tsup": "^6.5.0"
 	},
